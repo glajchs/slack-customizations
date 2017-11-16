@@ -60,6 +60,10 @@ Then launch slack from that terminal
 
 `slack &`
 
+or on a Mac
+
+`open -a Slack`
+
 Now after you've launched, you can right-click anywhere and hit "Inspect Element".  Customize away!
 
 ## Wishlist for the future
