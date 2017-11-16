@@ -51,6 +51,17 @@ While I don't have uninstallation instructions to *unpatch* the ssb-interop.sh f
 
     This file will not be loaded by default.  It is a work in progress.  It binds `ctrl+shift+pageup` and `ctrl+shift+pagedown` to moving the current channel/thread/direct message up/down one in the list.  While the rooms do move, and via a localStorage restore their ordering after a slack relaunch, there are still significant bugs in this implementation.  More work TBD.
 
+## How to run slack in devtools mode
+To run slack in a mode that gives you access to the webkit devtool (Inspect Element), go to a terminal, and set the variable SLACK_DEVELOPER_MENU
+
+`export SLACK_DEVELOPER_MENU=true`
+
+Then launch slack from that terminal
+
+`slack &`
+
+Now after you've launched, you can right-click anywhere and hit "Inspect Element".  Customize away!
+
 ## Wishlist for the future
 
 - Make the emoticon search widget allow for substring search (why isn't this built-in!!)
