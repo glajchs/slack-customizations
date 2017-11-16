@@ -1,0 +1,12 @@
+/* This adds line separators between messages for easier distinguishing.  Also makes the day separators more readable with dark themes */
+
+.dense_theme ts-message {
+    border-top: 1px solid #323232;
+}
+.day_container .day_msgs {
+    border-top: 2px solid #888888 !important;
+}
+
+.emoji-sizer, .no_jumbomoji .emoji-sizer.emoji-only, .no_jumbomoji.emoji-sizer.emoji-only {
+    margin-top: 0px !important;
+}

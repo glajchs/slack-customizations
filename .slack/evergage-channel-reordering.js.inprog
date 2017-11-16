@@ -1,0 +1,105 @@
+// TODO: This still breaks some things, so this is still in development
+
+// Reorder current channel or message to be previous (up) by 1
+Mousetrap.bind(['ctrl+shift+pageup'], function() {
+    var selectedNode = getSelectedNode();
+    var previousNode = selectedNode.prev();
+    if (previousNode.has("a[data-qa-channel-sidebar-channel-id]").size() > 0) {
+        selectedNode.detach().insertBefore(previousNode);
+        selectedNode[0].scrollIntoViewIfNeeded();
+    }
+    storeChannelsAndMessagesOrder();
+});
+// Reorder current channel or message to be next (down) by 1
+Mousetrap.bind(['ctrl+shift+pagedown'], function() {
+    var selectedNode = getSelectedNode();
+    var nextNode = selectedNode.next();
+    if (nextNode.has("a[data-qa-channel-sidebar-channel-id]").size() > 0) {
+        selectedNode.detach().insertAfter(nextNode);
+        selectedNode[0].scrollIntoViewIfNeeded();
+    }
+    storeChannelsAndMessagesOrder();
+});
+
+/* Store/Restore sidebar order functions */
+
+function initChannelsAndMessagesOrder() {
+    // Read the existing channel and message ordering from localStorage, if present
+    window.channelsOrder = window.localStorage.getItem("channelsOrder");
+    if (!window.channelsOrder) {
+        window.channelsOrder = [];
+    } else {
+        window.channelsOrder = window.channelsOrder.split(",");
+    }
+    window.messagesOrder = window.localStorage.getItem("messagesOrder");
+    if (!window.messagesOrder) {
+        window.messagesOrder = [];
+    } else {
+        window.messagesOrder = window.messagesOrder.split(",");
+    }
+    window.starredOrder = window.localStorage.getItem("starredOrder");
+    if (!window.starredOrder) {
+        window.starredOrder = [];
+    } else {
+        window.starredOrder = window.starredOrder.split(",");
+    }
+}
+
+function storeChannelsAndMessagesOrder() {
+    var channelsAndIMs = $("a[data-qa-channel-sidebar-channel-type]");
+    window.channelsOrder = [];
+    window.messagesOrder = [];
+    window.starredOrder = [];
+    for (var i = 0; i < channelsAndIMs.size(); i++) {
+        var type = $(channelsAndIMs[i]).attr("data-qa-channel-sidebar-channel-type");
+        var id = $(channelsAndIMs[i]).attr("data-qa-channel-sidebar-channel-id");
+        var isStarred = $(channelsAndIMs[i]).attr("data-qa-channel-sidebar-is-starred");
+        if (isStarred === "true") {
+            window.starredOrder.push(id);
+        } else if (type === "channel" || type === "private") {
+            window.channelsOrder.push(id);
+        } else if (type === "im" || type === "mpim") {
+            window.messagesOrder.push(id);
+        }
+    }
+    window.localStorage.setItem("channelsOrder", window.channelsOrder);
+    window.localStorage.setItem("messagesOrder", window.messagesOrder);
+    window.localStorage.setItem("starredOrder", window.starredOrder);
+}
+
+function restoreChannelsAndMessagesOrder() {
+    initChannelsAndMessagesOrder();
+    var channelsIndexNode = $("[data-qa-channel-sidebar-section-heading=channels]").parent();
+    if (window.channelsOrder) {
+        for (var i = 0; i < window.channelsOrder.length; i++) {
+            var channelId = channelsOrder[i];
+            var nodeToReorder = $("[data-qa-channel-sidebar-channel-id=" + channelId + "]").parent();
+            nodeToReorder.detach().insertAfter(channelsIndexNode);
+            channelsIndexNode = nodeToReorder;
+        }
+    }
+    var messagesIndexNode = $("[data-qa-channel-sidebar-section-heading=ims]").parent();
+    if (window.messagesOrder) {
+        for (var i = 0; i < window.messagesOrder.length; i++) {
+            var messageId = messagesOrder[i];
+            var nodeToReorder = $("[data-qa-channel-sidebar-channel-id=" + messageId + "]").parent().parent();
+            nodeToReorder.detach().insertAfter(messagesIndexNode);
+            messagesIndexNode = nodeToReorder;
+        }
+    }
+    var starredIndexNode = $("[data-qa-channel-sidebar-section-heading=starred]").parent();
+    if (window.starredOrder) {
+        for (var i = 0; i < window.starredOrder.length; i++) {
+            var starredItemId = starredOrder[i];
+            var starredNode = $("[data-qa-channel-sidebar-channel-id=" + starredItemId + "]");
+            var nodeToReorder = starredNode.parent();
+            if (starredNode.attr("data-qa-channel-sidebar-channel-type") === "im" || starredNode.attr("data-qa-channel-sidebar-channel-type") === "mpim") {
+                nodeToReorder = nodeToReorder.parent();
+            }
+            nodeToReorder.detach().insertAfter(starredIndexNode);
+            starredIndexNode = nodeToReorder;
+        }
+    }
+}
+// TODO: This obviously shouldn't be on a timer, figure out when to fire it!
+// setTimeout(restoreChannelsAndMessagesOrder, 2000);
