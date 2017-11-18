@@ -66,6 +66,9 @@ or on a Mac
 
 Now after you've launched, you can right-click anywhere and hit "Inspect Element".  Customize away!
 
+## Caveats
+Tested first on Linux, starting to do testing w/Macs via other machines.  Windows not tested at all yet (and there are a few things that I know need doing before it will work).
+
 ## Wishlist for the future
 
 - Make the emoticon search widget allow for substring search (why isn't this built-in!!)

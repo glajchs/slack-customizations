@@ -14,12 +14,19 @@ var waitForEnvironmentHomeVariableInterval = setInterval(function() {
 
 function loadEvergageCustom() {
     var fs = require("fs");
-    fs.readdir(window.process.env.HOME + "/" + ".slack", function(arg1, files) {
+    var homedir = window.process.env.HOME;
+    // For some stupid reason, "env HOME" isn't actually the homedir for macs...it's some weird slack directory 6 levels deep beyond that.
+    // Trim to just be the actual homedir instead.
+    if (homedir.startsWith("/Users/")) {
+        var homedirStartingWithUsername = homedir.substring("/Users/".length);
+        homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
+    }
+    fs.readdir(homedir + "/" + ".slack", function(arg1, files) {
         if (files && files.length > 1) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 if (file.endsWith(".js")) {
-                    fs.readFile(window.process.env.HOME + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
+                    fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
                         if (!err) {
                             var script = document.createElement("script")
                             script.innerText = data;
@@ -29,7 +36,7 @@ function loadEvergageCustom() {
                         }
                     });
                 } else if (file.endsWith(".css")) {
-                    fs.readFile(window.process.env.HOME + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
+                    fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
                         if (!err) {
                             var css = document.createElement("style")
                             css.innerText = data;
