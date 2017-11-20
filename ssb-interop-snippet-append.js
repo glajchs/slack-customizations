@@ -28,7 +28,7 @@ function loadEvergageCustom() {
                 if (file.endsWith(".js")) {
                     fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
                         if (!err) {
-                            var script = document.createElement("script")
+                            var script = document.createElement("script");
                             script.innerText = data;
                             eval(data);
                             script.setAttribute("type", "text/javascript");
@@ -38,7 +38,7 @@ function loadEvergageCustom() {
                 } else if (file.endsWith(".css")) {
                     fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
                         if (!err) {
-                            var css = document.createElement("style")
+                            var css = document.createElement("style");
                             css.innerText = data;
                             document.getElementsByTagName("head")[0].appendChild(css);
                         }

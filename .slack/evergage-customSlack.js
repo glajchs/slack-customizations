@@ -64,8 +64,21 @@ var newSelectedNode = null;
 // Override close window command to instead of closing the whole program, close the current direct message or channel
 // Note that a channel close is a channel leave
 Mousetrap.bind(['ctrl+w'], function() {
-    window.TS.channels.leave(window.TS.shared.getActiveModelOb().id);
-    window.TS.ims.closeIm(window.TS.shared.getActiveModelOb().id);
+    var selectedNodeId = window.TS.shared.getActiveModelOb().id;
+    var selectedNode = getSelectedNode();
+    var nodeToTest = selectedNode.prevAll("div:has(a)").first();
+    if (nodeToTest.size() === 0) {
+        nodeToTest = selectedNode.nextAll("div:has(a)").first();
+    }
+    if (nodeToTest.size() > 0) {
+        openItemByNode(nodeToTest.find("a"));
+        clearTimeout(selectNodeTimeout);
+        selectNodeTimeout = -1;
+        newSelectedNode = null;
+    }
+    window.TS.channels.leave(selectedNodeId);
+    window.TS.ims.closeIm(selectedNodeId);
+    window.TS.mpims.closeMpim(selectedNodeId);
     return false;
 });
 
