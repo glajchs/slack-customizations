@@ -64,7 +64,7 @@ var newSelectedNode = null;
 // Override close window command to instead of closing the whole program, close the current direct message or channel
 // Note that a channel close is a channel leave
 Mousetrap.bind(['ctrl+w'], function() {
-    var selectedNodeId = window.TS.shared.getActiveModelOb().id;
+    var selectedNodeId = window.TS.shared.legacyGetActiveModelOb().id;
     var selectedNode = getSelectedNode();
     var nodeToTest = selectedNode.prevAll("div:has(a)").first();
     if (nodeToTest.size() === 0) {
@@ -78,6 +78,7 @@ Mousetrap.bind(['ctrl+w'], function() {
     }
     window.TS.channels.leave(selectedNodeId);
     window.TS.ims.closeIm(selectedNodeId);
+    window.TS.groups.leave(selectedNodeId);
     window.TS.mpims.closeMpim(selectedNodeId);
     return false;
 });
@@ -90,11 +91,11 @@ function openItemByNode(node) {
     if (type === "im") {
         TS.ims.displayIm(id);
     } else if (type === "channel") {
-        TS.channels.displayChannel({id: id});
+        TS.channels.legacyDisplayChannel({id: id});
     } else if (type === "private") {
         TS.groups.displayGroup({id: id});
     } else if (type === "mpim") {
-        TS.mpims.displayMpim({id: id});
+        TS.mpims.legacyDisplayMpim({id: id});
     }
 }
 function getSelectedNode() {
