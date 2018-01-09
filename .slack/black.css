@@ -227,7 +227,7 @@ input[disabled], input[readonly], textarea[disabled], textarea[readonly] { backg
 
 .btn.btn_outline.disabled:hover { background: #424242 !important; color: #949494 !important; }
 
-.btn.btn_attachment { border-color: #545454; }
+.btn.btn_attachment { border-color: #545454; background-color: #545454; }
 
 .btn.btn_attachment:hover, .btn.btn_attachment:focus { background-color: #363636; border-color: #828282; }
 
@@ -291,7 +291,9 @@ input[disabled], input[readonly], textarea[disabled], textarea[readonly] { backg
 
 .lazy_filter_select .lfs_input_container.active { box-shadow: 0 0 7px rgba(34, 34, 34, 0.15); }
 
-.lazy_filter_select .lfs_list_container { background: #222; border-color: #000; box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }
+.lazy_filter_select .lfs_list_container { background: #545454; border-color: #000; box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); }
+
+.lazy_filter_select.single.filter_in_list_style .lfs_list_container .lfs_item, .lazy_filter_select.single.filter_in_list_style .lfs_value .lfs_item { color: #e6e6e6; }
 
 .lazy_filter_select .lfs_list .lfs_item.selected { color: #e6e6e6; }
 
