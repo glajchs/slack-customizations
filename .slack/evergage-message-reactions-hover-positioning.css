@@ -1,0 +1,8 @@
+/* For some reason, the little popup that lets you reply/share/react/etc to a specific message is positioned vertically
+   between the previous message and the current message.  This makes it really hard to click,
+   so I've moved it back to the top of the current message.*/
+
+ts-message .action_hover_container {
+    top: 0px;
+}
+
