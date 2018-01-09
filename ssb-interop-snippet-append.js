@@ -48,3 +48,6 @@ function loadEvergageCustom() {
         }
     });
 }
+
+// TODO: occasionally the find stuff is getting bound too early, requiring another refresh (ctrl+r) for it to work
+// window.TS.ensureFullyBooted().then(function() { console.log(arguments); })
