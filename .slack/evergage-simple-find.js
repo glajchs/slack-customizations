@@ -1,8 +1,17 @@
+// Note this module is still a little bit of a work in progress.
+// It still needs work when the content is refreshed by way of loading new pages
+// It still needs to work better when going between different conversations with the find window open
+// But it's already so much better than the built-in find that I'm going to release it as not in progress as I keep finishing it out
+
 var findText = "";
-var findResults = [];
+var findResults = window.findResults = [];
 var findResultsCounter = -1;
+var findResultsExceeded = false;
+var isKeyRepeatMode = false;
+var isKeyAlreadyDown = false;
 
 var css = document.createElement("style");
+css.classList.add("evergage-simple-find");
 css.innerText = "span.simpleTextSearchHighlight {\n" +
                 "    background-color: yellow;\n" +
                 "    color: black;\n" +
@@ -25,13 +34,22 @@ Mousetrap.bind(['esc'], function() {
 });
 
 // Disable default ctrl+f
+window.originalFindFunction = TS.key_triggers.getFromCode(70).func;
 TS.key_triggers.getFromCode(70).func = function() {};
-// TS.prefs.setPrefLocal("f_key_search", true);
-// Mousetrap.unbind(['ctrl+f']);
+
+window.oldSchoolFindMousetrapHandler = function() {
+    console.log("old school find");
+    console.log(window.originalFindFunction);
+    window.originalFindFunction();
+};
+
+// TODO: Disable the default ctrl+shift+f of (fullscreen) so we can use that for old-school slack find instead
+// For now, old school find is ctrl+shift+d instead
+Mousetrap.bind(['ctrl+shift+d'], window.oldSchoolFindMousetrapHandler);
 
 Mousetrap.bind(['ctrl+d', 'ctrl+f'], function() {
     var existingSearchBox = $("#simpleSearchBox");
-    if (existingSearchBox.size() > 0) {
+    if (existingSearchBox.length > 0) {
         $("#simpleSearchBox").show();
     } else {
         var searchBox = $("<div></div>");
@@ -55,30 +73,44 @@ Mousetrap.bind(['ctrl+d', 'ctrl+f'], function() {
         });
         textSearchNode.appendTo(searchBox);
         $(textSearchNode).keyup(function (event) {
-            if (event.keyCode == 13) {
-                var newFindText = this.value;
+            isKeyRepeatMode = false;
+            var newFindText = this.value;
+            if (newFindText == null || newFindText === "") {
+                clearSimpleFind();
+                return;
+            }
+            if (newFindText !== findText || (event.keyCode === 13 && event.ctrlKey)) {
+                goToNewFindResult(newFindText);
+                return;
+            }
+        });
+        $(textSearchNode).keydown(function (event) {
+            console.time("Keydown");
+
+            if (event.keyCode === 13) {
+                if (isKeyAlreadyDown) {
+                    isKeyRepeatMode = true;
+                }
+                isKeyAlreadyDown = true;
                 if (event.ctrlKey) {
                     TS.client.ui.doLoadScrollBackHistory(true);
                     return;
                 }
-                if (newFindText == null || newFindText === "") {
-                    clearSimpleFind();
-                    return;
-                }
                 if (event.shiftKey) {
-                    if (newFindText === findText) {
+                    if (isKeyRepeatMode) {
                         goToPreviousFindResult();
                     } else {
-                        goToNewFindResult(newFindText);
+                        resetAndGoToPreviousFindResult();
                     }
                 } else {
-                    if (newFindText === findText) {
+                    if (isKeyRepeatMode) {
                         goToNextFindResult();
                     } else {
-                        goToNewFindResult(newFindText);
+                        resetAndGoToNextFindResult();
                     }
                 }
             }
+            console.timeEnd("Keydown");
         });
         var findCounterNode = $("<div></div>");
         findCounterNode.addClass("findCounter");
@@ -91,7 +123,7 @@ Mousetrap.bind(['ctrl+d', 'ctrl+f'], function() {
             top: "1px",
             right: "0px",
             color: "#a3a3a3",
-            width: "70px"
+            width: "80px"
         });
         findCounterNode.appendTo(searchBox);
         setFindCounterText("| 0/0");
@@ -104,15 +136,15 @@ Mousetrap.bind(['ctrl+d', 'ctrl+f'], function() {
 });
 
 function clearSimpleFind() {
+    resetExistingHighlightNodes();
     findResultsCounter = -1;
-    findResults = [];
     findText = "";
     setFindCounterText();
 }
 
 function setFindCounterText() {
     var findCounterNode = $("#simpleSearchBox .findCounter");
-    findCounterNode.text("| " + (findResultsCounter + 1) + "/" + findResults.length);
+    findCounterNode.text("| " + (findResultsCounter + 1) + "/" + findResults.length + (findResultsExceeded ? "+" : ""));
 }
 
 function isElementVisible(element) {
@@ -132,71 +164,89 @@ function isElementVisible(element) {
 function scrollToItem() {
     $(findResults).removeClass("selected");
     $(findResults[findResultsCounter]).addClass("selected");
-    var elementTop = $(findResults[findResultsCounter]).parents("ts-message").position().top
-                     + $(findResults[findResultsCounter]).position().top;
-    // findResults[findResultsCounter].scrollIntoView();
-    var dayMessagesPreviousSiblings = $(findResults[findResultsCounter]).parents("ts-message").parents(".day_msgs").prevAll();
+    if (!isElementVisible($(findResults[findResultsCounter])[0])) {
+        // 30 px gives the top of the frame room to breathe, otherwise scrolling to the top will automatically
+        // load another frame of results, which aside from being bad, is also very laggy
+        $("#msgs_scroller_div").scrollTop(determineScrollTopForItem(findResultsCounter));
+    }
+}
+
+function determineScrollTopForItem(itemCounter) {
+    var elementTop = $(findResults[itemCounter]).parents("ts-message").position().top
+                     + $(findResults[itemCounter]).position().top;
+    var dayMessagesPreviousSiblings = $(findResults[itemCounter]).parents("ts-message").parents(".day_msgs").prevAll();
     for (var i = 0; i < dayMessagesPreviousSiblings.length; i++) {
         elementTop += $(dayMessagesPreviousSiblings[i]).height();
     }
-    var dayContainerPreviousSiblings = $(findResults[findResultsCounter]).parents("ts-message").parents(".day_container").prevAll();
+    var dayContainerPreviousSiblings = $(findResults[itemCounter]).parents("ts-message").parents(".day_container").prevAll();
     for (var i = 0; i < dayContainerPreviousSiblings.length; i++) {
         elementTop += $(dayContainerPreviousSiblings[i]).height();
     }
-    var messagesDivPreviousSiblings = $(findResults[findResultsCounter]).parents("ts-message").parents("#msgs_div").prevAll();
+    var messagesDivPreviousSiblings = $(findResults[itemCounter]).parents("ts-message").parents("#msgs_div").prevAll();
     for (var i = 0; i < messagesDivPreviousSiblings.length; i++) {
         elementTop += $(messagesDivPreviousSiblings[i]).height();
     }
     var scrollAreaHeightToSubtract = Math.round($("#msgs_scroller_div").height() / 2);
-    if (!isElementVisible($(findResults[findResultsCounter])[0])) {
-        $("#msgs_scroller_div").scrollTop(elementTop - scrollAreaHeightToSubtract);
-    }
+    return Math.max(elementTop - scrollAreaHeightToSubtract, 30);
+}
+
+function resetFindNodes() {
+    findMatchingTextNodes();
+}
+
+function resetAndGoToNextFindResult() {
+    resetFindNodes();
 }
 
 function goToNextFindResult() {
-    // findResults = $(".day_msgs").find("ts-message:contains(\"" + findText + "\")");
-    findMatchingTextNodes();
-    highlightFindings();
     if (findResults.length > 0) {
         findResultsCounter++;
         if (findResultsCounter > findResults.length - 1) {
             findResultsCounter = 0;
         }
+    }
+    activateFindResult();
+}
+
+function activateFindResult() {
+    if (findResults.length > 0) {
         scrollToItem();
     }
     setFindCounterText();
 }
 
+function resetAndGoToPreviousFindResult() {
+    resetFindNodes();
+}
+
 function goToPreviousFindResult() {
-    findMatchingTextNodes();
-    highlightFindings();
     if (findResults.length > 0) {
         findResultsCounter--;
         if (findResultsCounter < 0) {
-            findResultsCounter = findResults.size() - 1;
+            findResultsCounter = findResults.length - 1;
         }
-        scrollToItem();
     }
-    setFindCounterText();
+    activateFindResult();
 }
 
 function goToNewFindResult(newFindText) {
     findText = newFindText;
     findResultsCounter = -1;
-    findMatchingTextNodes();
-    highlightFindings();
+    resetFindNodes();
     if (findResults.length > 0) {
         findResultsCounter = 0;
+        for (var i = 0; i < findResults.length; i++) {
+            if (isElementVisible(findResults[i])) {
+                findResultsCounter = i;
+                break;
+            } else if (determineScrollTopForItem(i) >= $("#msgs_scroller_div").scrollTop()) {
+                findResultsCounter = i;
+                break;
+            }
+        }
         scrollToItem();
     }
     setFindCounterText();
-}
-
-function highlightFindings() {
-    for (var i = 0; i < findResults.length; i++) {
-        var findResult = findResults[i];
-
-    }
 }
 
 function resetExistingHighlightNodes() {
@@ -228,16 +278,21 @@ function resetExistingHighlightNodes() {
         $(existingNode).before($(newTextNode));
         existingNode.parentNode.removeChild(existingNode);
     }
-    findResults = $();
+    findResults = window.findResults = [];
 }
 window.resetExistingHighlightNodes = resetExistingHighlightNodes;
 
 function findMatchingTextNodes() {
     resetExistingHighlightNodes();
     var textNodes = $(".day_msgs").find(":not(iframe, script, style)").contents().filter(function() {
-        return this.nodeType == 3 && this.textContent.indexOf(findText) > -1;
+        return this.nodeType === 3 && this.textContent.indexOf(findText) > -1 && $(this).parent().is(":visible");
     });
-    for (var i = 0; i < textNodes.length; i++) {
+    findResultsExceeded = false;
+    for (var i = textNodes.length - 1; i >= 0; i--) {
+        if (findResults.length >= 100) {
+            findResultsExceeded = true;
+            break;
+        }
         var textNode = textNodes[i];
         var textContent = textNode.textContent;
         if (textContent !== findText || !$(textNode).parent().hasClass("simpleTextSearchHighlight")) {
@@ -252,12 +307,7 @@ function findMatchingTextNodes() {
             $(textNode).before(wrapperFoundTextNode);
             textNode.parentNode.removeChild(textNode);
 
-            findResults.push(wrapperFoundTextNode[0]
-                    // {
-                    //     textNode: textNode,
-                    //     parentNode: $(textNode).parent()
-                    // }
-            );
+            findResults.unshift(wrapperFoundTextNode[0]);
         }
     }
 }
