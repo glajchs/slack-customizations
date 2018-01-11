@@ -2,6 +2,10 @@
    between the previous message and the current message.  This makes it really hard to click,
    so I've moved it back to the top of the current message.*/
 
+.c-message--adjacent .c-message__actions, .c-message--sli_highlight_negative .c-message__actions, .c-message__actions.c-message__actions--dense {
+    top: 0px;
+}
+
 ts-message .action_hover_container {
     top: 0px;
 }
