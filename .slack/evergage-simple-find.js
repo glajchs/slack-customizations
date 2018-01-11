@@ -38,8 +38,6 @@ window.originalFindFunction = TS.key_triggers.getFromCode(70).func;
 TS.key_triggers.getFromCode(70).func = function() {};
 
 window.oldSchoolFindMousetrapHandler = function() {
-    console.log("old school find");
-    console.log(window.originalFindFunction);
     window.originalFindFunction();
 };
 
@@ -167,26 +165,26 @@ function scrollToItem() {
     if (!isElementVisible($(findResults[findResultsCounter])[0])) {
         // 30 px gives the top of the frame room to breathe, otherwise scrolling to the top will automatically
         // load another frame of results, which aside from being bad, is also very laggy
-        $("#msgs_scroller_div").scrollTop(determineScrollTopForItem(findResultsCounter));
+        $(".c-virtual_list__scroll_container").scrollTop(determineScrollTopForItem(findResultsCounter));
     }
 }
 
 function determineScrollTopForItem(itemCounter) {
-    var elementTop = $(findResults[itemCounter]).parents("ts-message").position().top
+    var elementTop = $(findResults[itemCounter]).parents(".c-message").parent().position().top
                      + $(findResults[itemCounter]).position().top;
-    var dayMessagesPreviousSiblings = $(findResults[itemCounter]).parents("ts-message").parents(".day_msgs").prevAll();
+    var dayMessagesPreviousSiblings = $(findResults[itemCounter]).parents(".c-message").parent().prevAll();
     for (var i = 0; i < dayMessagesPreviousSiblings.length; i++) {
         elementTop += $(dayMessagesPreviousSiblings[i]).height();
     }
-    var dayContainerPreviousSiblings = $(findResults[itemCounter]).parents("ts-message").parents(".day_container").prevAll();
+    var dayContainerPreviousSiblings = $(findResults[itemCounter]).parents(".c-message").parent().prevAll();
     for (var i = 0; i < dayContainerPreviousSiblings.length; i++) {
         elementTop += $(dayContainerPreviousSiblings[i]).height();
     }
-    var messagesDivPreviousSiblings = $(findResults[itemCounter]).parents("ts-message").parents("#msgs_div").prevAll();
+    var messagesDivPreviousSiblings = $(findResults[itemCounter]).parents(".c-message").parent().prevAll();
     for (var i = 0; i < messagesDivPreviousSiblings.length; i++) {
         elementTop += $(messagesDivPreviousSiblings[i]).height();
     }
-    var scrollAreaHeightToSubtract = Math.round($("#msgs_scroller_div").height() / 2);
+    var scrollAreaHeightToSubtract = Math.round($(".c-virtual_list__scroll_container").height() / 2);
     return Math.max(elementTop - scrollAreaHeightToSubtract, 30);
 }
 
@@ -239,7 +237,7 @@ function goToNewFindResult(newFindText) {
             if (isElementVisible(findResults[i])) {
                 findResultsCounter = i;
                 break;
-            } else if (determineScrollTopForItem(i) >= $("#msgs_scroller_div").scrollTop()) {
+            } else if (determineScrollTopForItem(i) >= $(".c-virtual_list__scroll_container").scrollTop()) {
                 findResultsCounter = i;
                 break;
             }
@@ -284,7 +282,9 @@ window.resetExistingHighlightNodes = resetExistingHighlightNodes;
 
 function findMatchingTextNodes() {
     resetExistingHighlightNodes();
-    var textNodes = $(".day_msgs").find(":not(iframe, script, style)").contents().filter(function() {
+    // This still doesn't work on anything more than your current viewport, as they are now removing DOM elements
+    // as you scroll up and down!! (which is making for *very* buggy scrolling).  I'm not sure what would posses them to do this.
+    var textNodes = $(".c-virtual_list__scroll_container").find(":not(iframe, script, style)").contents().filter(function() {
         return this.nodeType === 3 && this.textContent.indexOf(findText) > -1 && $(this).parent().is(":visible");
     });
     findResultsExceeded = false;
