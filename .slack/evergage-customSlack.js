@@ -89,7 +89,7 @@ function openItemByNode(node) {
     var type = node.attr("data-qa-channel-sidebar-channel-type");
     var id = node.attr("data-qa-channel-sidebar-channel-id");
     if (type === "im") {
-        TS.ims.displayIm(id);
+        TS.ims.legacyDisplayIm(id);
     } else if (type === "channel") {
         TS.channels.legacyDisplayChannel({id: id});
     } else if (type === "private") {
