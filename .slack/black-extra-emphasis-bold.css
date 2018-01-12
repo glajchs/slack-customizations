@@ -1,0 +1,6 @@
+/* Make *emphasis*, which slack turns into "bold", stand out more by making it fully white and also italic.  Maybe I'll add :before and :after "*" later too */
+
+.c-message__body b[data-stringify-prefix="*"][data-stringify-suffix="*"] {
+    font-style: italic;
+    color: white;
+}
