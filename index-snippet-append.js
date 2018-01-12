@@ -25,7 +25,7 @@ function loadEvergageCustom() {
         if (files && files.length > 1) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
-                if (file.endsWith(".js") && !file.endsWith("-leftnav.js")) {
+                if (file.endsWith("-leftnav.js")) {
                     fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
                         if (!err) {
                             var script = document.createElement("script");
@@ -35,7 +35,7 @@ function loadEvergageCustom() {
                             document.getElementsByTagName("head")[0].appendChild(script);
                         }
                     });
-                } else if (file.endsWith(".css") && !file.endsWith("-leftnav.css")) {
+                } else if (file.endsWith("-leftnav.css")) {
                     fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
                         if (!err) {
                             var css = document.createElement("style");
