@@ -1,8 +1,17 @@
 /* This adds line separators between messages for easier distinguishing.  Also makes the day separators more readable with dark themes */
 
+.c-message {
+    border-top: 1px solid #323232;
+}
+
 .dense_theme ts-message {
     border-top: 1px solid #323232;
 }
+
+.c-message_list__day_divider__line {
+    border-top: 2px solid #888888 !important;
+}
+
 .day_container .day_msgs {
     border-top: 2px solid #888888 !important;
 }
