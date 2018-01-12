@@ -33,19 +33,24 @@ Mousetrap.bind(['esc'], function() {
     }
 });
 
+// Bind ctrl+shift+f and ctrl+shift+d to old school slack find.  Must be bound on keydown to happen in time
+Mousetrap.bind(['ctrl+shift+d'], window.originalFindFunction);
+$(document).bind("keydown", function(event) {
+    // 70 === f
+    if (event.keyCode === 70 && event.shiftKey && event.ctrlKey) {
+        originalFindFunction();
+        event.preventDefault();
+    }
+});
+
 // Disable default ctrl+f
 window.originalFindFunction = TS.key_triggers.getFromCode(70).func;
 TS.key_triggers.getFromCode(70).func = function() {};
 
-window.oldSchoolFindMousetrapHandler = function() {
-    window.originalFindFunction();
-};
 
-// TODO: Disable the default ctrl+shift+f of (fullscreen) so we can use that for old-school slack find instead
-// For now, old school find is ctrl+shift+d instead
-Mousetrap.bind(['ctrl+shift+d'], window.oldSchoolFindMousetrapHandler);
+Mousetrap.bind(['ctrl+d', 'ctrl+f'], handleFindToggle);
 
-Mousetrap.bind(['ctrl+d', 'ctrl+f'], function() {
+function handleFindToggle() {
     var existingSearchBox = $("#simpleSearchBox");
     if (existingSearchBox.length > 0) {
         $("#simpleSearchBox").show();
@@ -131,7 +136,7 @@ Mousetrap.bind(['ctrl+d', 'ctrl+f'], function() {
     var inputNode = $("#simpleSearchBox .simpleTextSearchInputNode");
     inputNode.focus();
     inputNode[0].setSelectionRange(0, inputNode[0].value.length)
-});
+}
 
 function clearSimpleFind() {
     resetExistingHighlightNodes();
@@ -285,7 +290,7 @@ function findMatchingTextNodes() {
     // This still doesn't work on anything more than your current viewport, as they are now removing DOM elements
     // as you scroll up and down!! (which is making for *very* buggy scrolling).  I'm not sure what would posses them to do this.
     var textNodes = $(".c-virtual_list__scroll_container").find(":not(iframe, script, style)").contents().filter(function() {
-        return this.nodeType === 3 && this.textContent.indexOf(findText) > -1 && $(this).parent().is(":visible");
+        return this.nodeType === 3 && this.textContent.toLowerCase().indexOf(findText.toLowerCase()) > -1 && $(this).parent().is(":visible");
     });
     findResultsExceeded = false;
     for (var i = textNodes.length - 1; i >= 0; i--) {
@@ -296,12 +301,13 @@ function findMatchingTextNodes() {
         var textNode = textNodes[i];
         var textContent = textNode.textContent;
         if (textContent !== findText || !$(textNode).parent().hasClass("simpleTextSearchHighlight")) {
-            var startingIndex = textContent.indexOf(findText);
-            var beforeTextNode = document.createTextNode(textNode.textContent.substring(0, startingIndex));
-            var afterTextNode = document.createTextNode(textNode.textContent.substring(startingIndex + findText.length));
+            var startingIndex = textContent.toLowerCase().indexOf(findText.toLowerCase());
+            var beforeTextNode = document.createTextNode(textContent.substring(0, startingIndex));
+            var foundTextWithOriginalCasing = textContent.substr(startingIndex, findText.length); // Substr is different than substring with arguments /facepalm
+            var afterTextNode = document.createTextNode(textContent.substring(startingIndex + findText.length));
             var wrapperFoundTextNode = $("<span></span>");
             wrapperFoundTextNode.addClass("simpleTextSearchHighlight");
-            wrapperFoundTextNode[0].textContent = findText;
+            wrapperFoundTextNode[0].textContent = foundTextWithOriginalCasing;
             $(textNode).before($(beforeTextNode));
             $(textNode).after($(afterTextNode));
             $(textNode).before(wrapperFoundTextNode);
