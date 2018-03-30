@@ -10,6 +10,26 @@ var findResultsExceeded = false;
 var isKeyRepeatMode = false;
 var isKeyAlreadyDown = false;
 
+var scrollerDivSelector = ".message_pane_scroller .c-scrollbar__hider";
+var messageViewportSelector = ".c-virtual_list--scrollbar";
+
+// Make the pageup/pagedown not laggy, not sure why they think animations are cool
+$(".client_main_container").bind("keydown.slackcustomizations", function(event) {
+    if (!event.ctrlKey && !event.shiftKey && !event.altKey) { // Page Up
+        if (event.keyCode === 33) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            var originalScrollTop = $(scrollerDivSelector).scrollTop();
+            $(scrollerDivSelector).scrollTop(originalScrollTop - $(messageViewportSelector).height());
+        } else if (event.keyCode === 34) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            var originalScrollTop = $(scrollerDivSelector).scrollTop();
+            $(scrollerDivSelector).scrollTop(originalScrollTop + $(messageViewportSelector).height());
+        }
+    }
+});
+
 var css = document.createElement("style");
 css.classList.add("evergage-simple-find");
 css.innerText = "span.simpleTextSearchHighlight {\n" +
@@ -88,15 +108,19 @@ function handleFindToggle() {
             }
         });
         $(textSearchNode).keydown(function (event) {
-            console.time("Keydown");
-
             if (event.keyCode === 13) {
                 if (isKeyAlreadyDown) {
                     isKeyRepeatMode = true;
                 }
                 isKeyAlreadyDown = true;
                 if (event.ctrlKey) {
-                    TS.client.ui.doLoadScrollBackHistory(true);
+                    var originalScrollTop = $(scrollerDivSelector).scrollTop();
+                    var originalOuterHeight = $(scrollerDivSelector).outerHeight();
+                    $(scrollerDivSelector).scrollTop(0);
+                    requestAnimationFrame(function() {
+                        var heightDifference = $(scrollerDivSelector).outerHeight() - originalOuterHeight;
+                        $(scrollerDivSelector).scrollTop(originalScrollTop + heightDifference);
+                    });
                     return;
                 }
                 if (event.shiftKey) {
@@ -113,7 +137,6 @@ function handleFindToggle() {
                     }
                 }
             }
-            console.timeEnd("Keydown");
         });
         var findCounterNode = $("<div></div>");
         findCounterNode.addClass("findCounter");
@@ -168,29 +191,17 @@ function scrollToItem() {
     $(findResults).removeClass("selected");
     $(findResults[findResultsCounter]).addClass("selected");
     if (!isElementVisible($(findResults[findResultsCounter])[0])) {
-        // 30 px gives the top of the frame room to breathe, otherwise scrolling to the top will automatically
-        // load another frame of results, which aside from being bad, is also very laggy
-        $(".c-virtual_list__scroll_container").scrollTop(determineScrollTopForItem(findResultsCounter));
+        $(scrollerDivSelector).scrollTop(determineScrollTopForItem(findResultsCounter));
     }
 }
 
 function determineScrollTopForItem(itemCounter) {
     var elementTop = $(findResults[itemCounter]).parents(".c-message").parent().position().top
                      + $(findResults[itemCounter]).position().top;
-    var dayMessagesPreviousSiblings = $(findResults[itemCounter]).parents(".c-message").parent().prevAll();
-    for (var i = 0; i < dayMessagesPreviousSiblings.length; i++) {
-        elementTop += $(dayMessagesPreviousSiblings[i]).height();
-    }
-    var dayContainerPreviousSiblings = $(findResults[itemCounter]).parents(".c-message").parent().prevAll();
-    for (var i = 0; i < dayContainerPreviousSiblings.length; i++) {
-        elementTop += $(dayContainerPreviousSiblings[i]).height();
-    }
-    var messagesDivPreviousSiblings = $(findResults[itemCounter]).parents(".c-message").parent().prevAll();
-    for (var i = 0; i < messagesDivPreviousSiblings.length; i++) {
-        elementTop += $(messagesDivPreviousSiblings[i]).height();
-    }
-    var scrollAreaHeightToSubtract = Math.round($(".c-virtual_list__scroll_container").height() / 2);
-    return Math.max(elementTop - scrollAreaHeightToSubtract, 30);
+    var scrollAreaHeightToSubtract = Math.round($(messageViewportSelector).height() / 2);
+    // Don't allow you to scroll to/past the "load more history" section, otherwise scrolling to the top will automatically
+    // load another frame of results, which aside from being bad, is also very laggy
+    return Math.max(elementTop - scrollAreaHeightToSubtract, $(".p-degraded_list__loading").outerHeight());
 }
 
 function resetFindNodes() {
@@ -242,7 +253,7 @@ function goToNewFindResult(newFindText) {
             if (isElementVisible(findResults[i])) {
                 findResultsCounter = i;
                 break;
-            } else if (determineScrollTopForItem(i) >= $(".c-virtual_list__scroll_container").scrollTop()) {
+            } else if (determineScrollTopForItem(i) >= $(scrollerDivSelector).scrollTop()) {
                 findResultsCounter = i;
                 break;
             }
