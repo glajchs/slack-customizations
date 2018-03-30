@@ -411,7 +411,7 @@ input[disabled], input[readonly], textarea[disabled], textarea[readonly] { backg
 
 .ql-editor::-webkit-scrollbar-thumb:hover { background-color: rgba(84, 84, 84, 0.8); }
 
-.ql-placeholder { color: #e6e6e6; filter: none; }
+.ql-placeholder { color: #e6e6e6 !important; filter: none; }
 
 .ql-container.texty_single_line_input { background: #545454; border: 1px solid #363636; color: #e6e6e6; }
 
@@ -2805,7 +2805,7 @@ input[type="text"].p-emoji_picker__input:focus { border-color: #545454; box-shad
 
 ts-jumper ts-jumper-container { background: #222; box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
 
-ts-jumper ts-jumper-help { color: #949494; }
+ts-jumper ts-jumper-help { color: #949494; background: #303030; }
 
 ts-jumper input[type=text] { border: 1px solid #000 !important; color: #e6e6e6; }
 
