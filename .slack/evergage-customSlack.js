@@ -61,9 +61,15 @@ Mousetrap.bind(['ctrl+pagedown'], function() {
 var selectNodeTimeout = -1;
 var newSelectedNode = null;
 
-// Override close window command to instead of closing the whole program, close the current direct message or channel
-// Note that a channel close is a channel leave
-Mousetrap.bind(['ctrl+w'], function() {
+$("body").bind("keydown.slackcustomizations", function(event) {
+    if (event.ctrlKey && event.keyCode === 87) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        closeCurrentChat();
+    }
+});
+
+function closeCurrentChat() {
     var selectedNodeId = window.TS.shared.legacyGetActiveModelOb().id;
     var selectedNode = getSelectedNode();
     var nodeToTest = selectedNode.prevAll("div:has(a)").first();
@@ -76,12 +82,12 @@ Mousetrap.bind(['ctrl+w'], function() {
         selectNodeTimeout = -1;
         newSelectedNode = null;
     }
-    window.TS.channels.leave(selectedNodeId);
-    window.TS.ims.closeIm(selectedNodeId);
-    window.TS.groups.leave(selectedNodeId);
-    window.TS.mpims.closeMpim(selectedNodeId);
+    TS.ms.msg_handlers.im_close({channel: selectedNodeId});
+    TS.ms.msg_handlers.mpim_close({channel: selectedNodeId});
+    TS.ms.msg_handlers.group_close({channel: selectedNodeId});
+    // TODO: get channel leave working again with ctrl+w.  I couldn't find the function to call
     return false;
-});
+}
 
 /* General Utility Functions */
 
@@ -98,6 +104,7 @@ function openItemByNode(node) {
         TS.mpims.legacyDisplayMpim({id: id});
     }
 }
+
 function getSelectedNode() {
     var selectedId = $("[data-qa-channel-sidebar-selected-item-id]").attr("data-qa-channel-sidebar-selected-item-id");
     var selectedNode = $("[data-qa-channel-sidebar-channel-id=" + selectedId + "]").parent();
