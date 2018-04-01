@@ -9,7 +9,7 @@ fi
 SLACK_SSB_FILE="${SLACK_INSTALLATION_PATH}/app.asar.unpacked/src/static/ssb-interop.js"
 SLACK_INDEX_FILE="${SLACK_INSTALLATION_PATH}/app.asar.unpacked/src/static/index.js"
 
-cat "${SLACK_SSB_FILE}" | grep loadEvergageCustom > /dev/null
+cat "${SLACK_SSB_FILE}" | grep loadSlackPlugins > /dev/null
 if [ $? == "0" ]; then
     echo "Slack's ssb-interop.js already patched, doing nothing."
 else
@@ -17,7 +17,7 @@ else
     cat ./ssb-interop-snippet-append.js | sudo tee -a "${SLACK_SSB_FILE}" > /dev/null
 fi
 
-cat "${SLACK_INDEX_FILE}" | grep loadEvergageCustom > /dev/null
+cat "${SLACK_INDEX_FILE}" | grep loadSlackPlugins > /dev/null
 if [ $? == "0" ]; then
     echo "Slack's index.js already patched, doing nothing."
 else

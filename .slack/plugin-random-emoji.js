@@ -1,7 +1,7 @@
 // By default, the emoji window is hard coded to be wide enough for 9 columns via explicity width: 361px;
 // But since width: auto renders fine too, we'll just override it
 var css = document.createElement("style");
-css.classList.add("evergage-random-emoji");
+css.classList.add("plugin-random-emoji");
 css.innerText = ".menu.p-emoji_picker {\n" +
                 "    width: auto;\n" +
                 "}\n";

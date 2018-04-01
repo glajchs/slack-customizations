@@ -4,7 +4,7 @@ Some customizations to slack, such as some keybindings, dark theme, etc
 ## Installation Instructions
 1. Sync this repo locally
 
-    `git clone https://github.com/evergage/slack-customizations.git`
+    `git clone https://github.com/glajchs/slack-customizations.git`
 2. Run the patch-slack.sh from within the slack-customizations folder
 
     `cd slack-customizations; ./patch-slack.sh`
@@ -37,7 +37,7 @@ While I don't have uninstallation instructions to *unpatch* the ssb-interop.sh f
 
     This adds tiny grey lines between messages, making it easier to distinguish between the lines.  If this isn't your cup of tee, delete or rename this file to not end in ".js".
 
-- .slack/evergage-customSlack.js
+- .slack/plugin-customSlack.js
 
     This adds a number of keyboard shortcuts.  Mac people let me know if this works with `cmd+KEY` instead of `ctrl+KEY`
 
@@ -47,7 +47,7 @@ While I don't have uninstallation instructions to *unpatch* the ssb-interop.sh f
 
     `ctrl+pageup` and `ctrl+pagedown` will move to the previous/next conversation in the sidebar list.  I've implemented it using a 250ms delay to enable multiple keystrokes taking effect.  This makes it significantly less laggy, as each conversation open locks the javascript thread for a good while.  This results in a *slight* delay in going to the previous/next room, but a much smoother ability to keep going to next/previous rooms seemlessly.  It will change the selected room color in the sidebar immediatelly however to give good feedback.
 
-- .slack/evergage-channel-reordering.js.inprog
+- .slack/plugin-channel-reordering.js.inprog
 
     This file will not be loaded by default.  It is a work in progress.  It binds `ctrl+shift+pageup` and `ctrl+shift+pagedown` to moving the current channel/thread/direct message up/down one in the list.  While the rooms do move, and via a localStorage restore their ordering after a slack relaunch, there are still significant bugs in this implementation.  More work TBD.
 
@@ -75,6 +75,6 @@ Tested first on Linux, starting to do testing w/Macs via other machines.  Window
 - Implement a proper `ctrl+f` find in currently open conversation, similar to what you'd have in your browser.  I would have this be in addition to the current slack search, which is fine for a "search all the things" implementation, but much less usable when searching within the currently open conversation.
 - Add a keyboard shortcut to star/unstar a conversation
 - Implement a mode where the ordering of the channels are based upon most recent activity
-- Implement a way to switch between ordering types (custom (see evergage-channel-reordering.js.inprog), alphabetical (default), most recent activity (to be implemented))
+- Implement a way to switch between ordering types (custom (see plugin-channel-reordering.js.inprog), alphabetical (default), most recent activity (to be implemented))
 - Find a way to get rid of the distinctions between types "Direct Messages, Apps, Channels", and just have 1 big list in the sidebar
 - Suggestions welcome!

@@ -2,7 +2,7 @@
 var timesThroughWaitingForHome = 0;
 var waitForEnvironmentHomeVariableInterval = setInterval(function() {
     if (window.process && window.process.env && window.process.env.HOME) {
-        loadEvergageCustom();
+        loadSlackPlugins();
         clearInterval(waitForEnvironmentHomeVariableInterval);
     } else if (timesThroughWaitingForHome > 15) {
         // *maybe* do stuff now (but without home dir portion)
@@ -12,7 +12,7 @@ var waitForEnvironmentHomeVariableInterval = setInterval(function() {
     }
 }, 1000);
 
-function loadEvergageCustom() {
+function loadSlackPlugins() {
     var fs = require("fs");
     var homedir = window.process.env.HOME;
     // For some stupid reason, "env HOME" isn't actually the homedir for macs...it's some weird slack directory 6 levels deep beyond that.
@@ -23,11 +23,11 @@ function loadEvergageCustom() {
     }
     fs.readdir(homedir + "/" + ".slack", function(arg1, files) {
         if (files && files.length > 1) {
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
+            _.forEach(files, function(file) {
                 if (file.endsWith(".js") && !file.endsWith("-leftnav.js")) {
                     fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
                         if (!err) {
+                            data += "\n\n//# sourceURL=/slack-customizations/" + file;
                             var script = document.createElement("script");
                             script.innerText = data;
                             eval(data);
@@ -44,7 +44,7 @@ function loadEvergageCustom() {
                         }
                     });
                 }
-            }
+            });
         }
     });
 }

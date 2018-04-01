@@ -2,7 +2,7 @@
 var timesThroughWaitingForHome = 0;
 var waitForEnvironmentHomeVariableInterval = setInterval(function() {
     if (window.process && window.process.env && window.process.env.HOME) {
-        loadEvergageCustom();
+        loadSlackPlugins();
         clearInterval(waitForEnvironmentHomeVariableInterval);
     } else if (timesThroughWaitingForHome > 15) {
         // *maybe* do stuff now (but without home dir portion)
@@ -12,7 +12,7 @@ var waitForEnvironmentHomeVariableInterval = setInterval(function() {
     }
 }, 1000);
 
-function loadEvergageCustom() {
+function loadSlackPlugins() {
     var fs = require("fs");
     var homedir = window.process.env.HOME;
     // For some stupid reason, "env HOME" isn't actually the homedir for macs...it's some weird slack directory 6 levels deep beyond that.

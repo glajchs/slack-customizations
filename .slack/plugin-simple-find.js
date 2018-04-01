@@ -31,7 +31,7 @@ $(".client_main_container").bind("keydown.slackcustomizations", function(event) 
 });
 
 var css = document.createElement("style");
-css.classList.add("evergage-simple-find");
+css.classList.add("plugin-simple-find");
 css.innerText = "span.simpleTextSearchHighlight {\n" +
                 "    background-color: yellow;\n" +
                 "    color: black;\n" +
