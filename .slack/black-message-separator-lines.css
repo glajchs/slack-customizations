@@ -22,5 +22,5 @@
 
 /* Used in conjunction with black theme */
 .c-message--adjacent .c-message__actions, .c-message--sli_highlight_negative .c-message__actions, .c-message__actions.c-message__actions--dense {
-    top: -1px;
+    top: -1px !important;
 }

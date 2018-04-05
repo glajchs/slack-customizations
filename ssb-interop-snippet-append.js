@@ -23,26 +23,15 @@ function loadSlackPlugins() {
     }
     fs.readdir(homedir + "/" + ".slack", function(arg1, files) {
         if (files && files.length > 1) {
+            // Ensure that plugin-framework.js runs last
+            _.pull(files, "plugin-framework.js");
+            files.push("plugin-framework.js");
+
             _.forEach(files, function(file) {
                 if (file.endsWith(".js") && !file.endsWith("-leftnav.js")) {
-                    fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
-                        if (!err) {
-                            data += "\n\n//# sourceURL=/slack-customizations/" + file;
-                            var script = document.createElement("script");
-                            script.innerText = data;
-                            eval(data);
-                            script.setAttribute("type", "text/javascript");
-                            document.getElementsByTagName("head")[0].appendChild(script);
-                        }
-                    });
-                } else if (file.endsWith(".css") && !file.endsWith("-leftnav.css")) {
-                    fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
-                        if (!err) {
-                            var css = document.createElement("style");
-                            css.innerText = data;
-                            document.getElementsByTagName("head")[0].appendChild(css);
-                        }
-                    });
+                    var data = fs.readFileSync(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"});
+                    data += "\n\n//# sourceURL=/slack-customizations/" + file;
+                    eval(data);
                 }
             });
         }
