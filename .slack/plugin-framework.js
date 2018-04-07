@@ -120,7 +120,7 @@ window.slackPlugins = window.slackPlugins || (function(window) {
         labelElement.appendTo(divWrapper);
         if (plugin.pluginName !== "enable_plugins") {
             var descriptionRow = $("<div></div>");
-            var showIcon = $("<i></i>").addClass("c-deprecated-icon").addClass("c-ison--caret-down").attr("type", "caret-down").attr("aria-hidden", "true").text("");
+            var showIcon = $("<i></i>").addClass("c-deprecated-icon").addClass("c-ison--caret-down").attr("type", "caret-down").attr("aria-hidden", "true").text("");
             showIcon.css({
                 fontFamily: "Slack v2",
                 fontSize: "20px",
@@ -140,7 +140,7 @@ window.slackPlugins = window.slackPlugins || (function(window) {
             descriptionRow.appendTo(divWrapper);
 
             var fullDescriptionRow = $("<div></div>");
-            var hideIcon = $("<i></i>").addClass("c-deprecated-icon").addClass("c-ison--caret-up").attr("type", "caret-up").attr("aria-hidden", "true").text("");
+            var hideIcon = $("<i></i>").addClass("c-deprecated-icon").addClass("c-ison--caret-up").attr("type", "caret-up").attr("aria-hidden", "true").text("");
             hideIcon.appendTo(fullDescriptionRow);
             hideIcon.unbind("click.slackPlugins");
             hideIcon.bind("click.slackPlugins", function () {
