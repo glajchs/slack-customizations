@@ -45,6 +45,7 @@ window.slackPluginList.push({
         });
 
         // Bind ctrl+shift+f and ctrl+shift+d to old school slack find.  Must be bound on keydown to happen in time
+        // TODO: mac key binds should consider "cmd" instead of control.  Maybe use Mousetrap here?
         Mousetrap.bind(['ctrl+shift+d'], window.originalFindFunction);
         $(document).bind("keydown", function(event) {
             // 70 === f
@@ -59,6 +60,7 @@ window.slackPluginList.push({
         TS.key_triggers.getFromCode(70).func = function() {};
 
 
+        // TODO: mac key binds should consider "cmd" instead of control.  Maybe use Mousetrap here?
         Mousetrap.bind(['ctrl+d', 'ctrl+f'], handleFindToggle);
 
         function handleFindToggle() {

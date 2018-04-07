@@ -11,6 +11,7 @@ window.slackPluginList.push({
 
         // I've implemented some rudimentary event burst handling so that changing nodes isn't so damn laggy
         // Go to previous (up) channel or message
+        // TODO: mac key binds should consider "cmd" instead of control.  Maybe use Mousetrap here?
         Mousetrap.bind(['ctrl+pageup'], function() {
             var selectedNode = getSelectedNode();
             if (selectNodeTimeout !== -1) {
@@ -32,6 +33,7 @@ window.slackPluginList.push({
             }, 250);
         });
         // Go to next (down) channel or message
+        // TODO: mac key binds should consider "cmd" instead of control.  Maybe use Mousetrap here?
         Mousetrap.bind(['ctrl+pagedown'], function() {
             var selectedNode = getSelectedNode();
             if (selectNodeTimeout !== -1) {

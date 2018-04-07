@@ -90,6 +90,7 @@ window.slackPlugins = window.slackPlugins || (function(window) {
         var applyDiv = $("<div></div>");
         applyDiv.addClass("c-button").addClass("c-button--small").addClass("c-button--outline");
         applyDiv.unbind("click.slackPlugins");
+        // TODO: consider binding this to spacebar key or other button activation techniques
         applyDiv.bind("click.slackPlugins", function () {
             window.location.reload();
         });

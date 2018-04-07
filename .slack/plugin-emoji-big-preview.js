@@ -50,12 +50,13 @@ window.slackPluginList.push({
             $(document).unbind("click.slackPluginsEmojiLarge");
             $(document).unbind("keydown.slackPluginsEmojiLarge");
             $(document).bind("click.slackPluginsEmojiLarge", function(event) {
+                // TODO: right-click detection might be different on macs, see if we can use Mousetrap here?
                 if (event.button !== 2) {
                     $("div.slackPluginsEmojiLarge").remove();
                 }
             });
             $(document).bind("keydown.slackPluginsEmojiLarge", function(event) {
-                if (event.keyCode === 27) {
+                if (event.keyCode === 27) { // 27 == Escape key
                     $("div.slackPluginsEmojiLarge").remove();
                 }
             });

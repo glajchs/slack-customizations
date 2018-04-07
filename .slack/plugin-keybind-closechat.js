@@ -7,6 +7,7 @@ window.slackPluginList.push({
     pluginDescriptionLong: "Adds ctrl+w keybind to close the current chat window.\nNote that closing multiple direct messages (mpims) as well as channels leaves them.  For channels you need to re-join (open), but for mpims, you need a re-invite to join.",
     loadFunction: function() {
         $("body").bind("keydown.slackcustomizations", function(event) {
+            // TODO: mac key binds should consider "cmd" instead of control.  Maybe use Mousetrap here?
             if (event.ctrlKey && event.keyCode === 87) { // 87 == "w"
                 event.preventDefault();
                 event.stopImmediatePropagation();
