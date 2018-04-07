@@ -21,19 +21,26 @@ function loadSlackPlugins() {
         var homedirStartingWithUsername = homedir.substring("/Users/".length);
         homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
     }
-    fs.readdir(homedir + "/" + ".slack", function(arg1, files) {
+    fs.readdir(homedir + "/" + ".slack", function (arg1, files) {
         if (files && files.length > 1) {
             // Ensure that plugin-framework.js runs last
-            _.pull(files, "plugin-framework.js");
-            files.push("plugin-framework.js");
-
-            _.forEach(files, function(file) {
-                if (file.endsWith(".js") && !file.endsWith("-leftnav.js")) {
-                    var data = fs.readFileSync(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"});
-                    data += "\n\n//# sourceURL=/slack-customizations/" + file;
-                    eval(data);
+            var pluginFrameworkFound = false;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                if (file === "plugin-framework.js") {
+                    pluginFrameworkFound = true;
+                    continue;
+                } else {
+                    if (file.endsWith(".js")) {
+                        var data = fs.readFileSync(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"});
+                        data += "\n\n//# sourceURL=/slack-customizations/" + file;
+                        eval(data);
+                    }
                 }
-            });
+            }
+            var data = fs.readFileSync(homedir + "/" + ".slack" + "/" + "plugin-framework.js", {encoding: "utf-8"});
+            data += "\n\n//# sourceURL=/slack-customizations/" + file;
+            eval(data);
         }
     });
 }

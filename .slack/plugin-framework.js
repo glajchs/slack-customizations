@@ -1,5 +1,6 @@
 window.slackPlugins = window.slackPlugins || (function(window) {
     var slackPluginsAPI = {};
+    var slackPluginEnablements = {};
 
     var fs = require("fs");
     var homedir = window.process.env.HOME;
@@ -9,29 +10,41 @@ window.slackPlugins = window.slackPlugins || (function(window) {
         var homedirStartingWithUsername = homedir.substring("/Users/".length);
         homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
     }
+    var slackPluginsFile = homedir + "/" + ".slack" + "/" + ".slackPluginsEnabled";
 
-    // TODO: I obviously shouldn't have to use this 2xinterval mess.  Need to figure out a reliable insertion point for these functions
-    var prefsDialogInitializedIntervalMaxTries = 100;
-    var prefsDialogInitializedIntervalCounter = 0;
-    var prefsDialogInitializedInterval = setInterval(function() {
-        try {
-            prefsDialogInitializedIntervalCounter++;
-            if (prefsDialogInitializedIntervalCounter > prefsDialogInitializedIntervalMaxTries) {
-                clearInterval(prefsDialogInitializedInterval);
-                return;
-            }
-            if (typeof TS.ui.prefs_dialog.start === "function") {
-                replacePrefsDialogStartFunction();
-                clearInterval(prefsDialogInitializedInterval);
-            }
-        } catch (exception) {
-            // no-op
-        }
-    }, 100);
+    var prefsDialogInitializedIntervalMaxTries;
+    var prefsDialogInitializedIntervalCounter;
+    var prefsDialogInitializedInterval;
 
     var prefsDialogInsertPluginsIntervalMaxTries = 100;
     var prefsDialogInsertPluginsIntervalCounter = 0;
     var prefsDialogInsertPluginsInterval;
+
+    slackPluginsAPI.loadLeftNavResources = function() {
+        // no-op for now, in case we need to do static things on load for the left-nav
+    };
+
+    slackPluginsAPI.loadMainWindowResources = function() {
+        // TODO: I obviously shouldn't have to use this 2xinterval mess.  Need to figure out a reliable insertion point for these functions
+        prefsDialogInitializedIntervalMaxTries = 100;
+        prefsDialogInitializedIntervalCounter = 0;
+        prefsDialogInitializedInterval = setInterval(function() {
+            try {
+                prefsDialogInitializedIntervalCounter++;
+                if (prefsDialogInitializedIntervalCounter > prefsDialogInitializedIntervalMaxTries) {
+                    clearInterval(prefsDialogInitializedInterval);
+                    return;
+                }
+                if (typeof TS.ui.prefs_dialog.start === "function") {
+                    replacePrefsDialogStartFunction();
+                    clearInterval(prefsDialogInitializedInterval);
+                }
+            } catch (exception) {
+                // no-op
+            }
+        }, 100);
+    };
+
     function replacePrefsDialogStartFunction() {
         var originalPrefsStart = TS.ui.prefs_dialog.start;
         TS.ui.prefs_dialog.start = function (a, b) {
@@ -109,12 +122,12 @@ window.slackPlugins = window.slackPlugins || (function(window) {
         var inputElement = $("<input type=\"checkbox\">");
         inputElement.attr("id", plugin.pluginName);
         // TODO: Can't get TS.prefs.setPrefLocal to stick across reloads.  Figure that out maybe?  Or just keep using localStorage
-        inputElement.prop("checked", "true" === window.localStorage.getItem("slackPlugins_" + plugin.pluginName));
+        inputElement.prop("checked", slackPluginsAPI.isPluginEnabled(plugin.pluginName));
         inputElement.unbind("change.slackPlugins");
         inputElement.bind("change.slackPlugins" , function(event) {
             var name = event.target.id;
             var value = !!event.target.checked;
-            window.localStorage.setItem("slackPlugins_" + name, value);
+            slackPluginsAPI.setPluginEnabled(name, value);
         });
         labelElement.append(inputElement);
         labelElement.append(plugin.pluginNameFriendly);
@@ -169,7 +182,7 @@ window.slackPlugins = window.slackPlugins || (function(window) {
             if (!err) {
                 var css = document.createElement("style");
                 css.innerText = data;
-                $(css).attr("filename", file);
+                css.setAttribute("filename", filepart);
                 document.getElementsByTagName("head")[0].appendChild(css);
             }
         });
@@ -178,26 +191,72 @@ window.slackPlugins = window.slackPlugins || (function(window) {
     slackPluginsAPI.loadJSFile = function(filepart) {
         fs.readFile(homedir + "/" + ".slack" + "/" + filepart, {encoding: "utf-8"}, function(err, data) {
             if (!err) {
-                data += "\n\n//# sourceURL=/slack-customizations/" + file;
+                data += "\n\n//# sourceURL=/slack-customizations/" + filepart;
                 eval(data);
             }
         });
     };
 
-    slackPluginsAPI.loadPlugins = function() {
-        if ("true" === window.localStorage.getItem("slackPlugins_enable_plugins")) {
+    slackPluginsAPI.loadPlugins = function(scope) {
+        if (slackPluginsAPI.isPluginEnabled("enable_plugins")) {
             for (var i = 0; i < window.slackPluginList.length; i++) {
                 var plugin = window.slackPluginList[i];
-                if ("true" === window.localStorage.getItem("slackPlugins_" + plugin.pluginName)) {
-                    if (typeof plugin.loadFunction === "function") {
-                        plugin.loadFunction();
+                if (slackPluginsAPI.isPluginEnabled(plugin.pluginName)) {
+                    if (scope === "LeftNav") {
+                        if (typeof plugin.loadLeftNavFunction === "function") {
+                            plugin.loadLeftNavFunction();
+                        }
+                    } else {
+                        if (typeof plugin.loadFunction === "function") {
+                            plugin.loadFunction();
+                        }
                     }
                 }
             }
         }
     };
 
+    slackPluginsAPI.init = function() {
+        slackPluginsAPI.readPluginEnablements();
+        if (window.location.href.indexOf("static/index.jade") !== -1) {
+            slackPluginsAPI.loadLeftNavResources();
+            slackPluginsAPI.loadPlugins("LeftNav");
+        } else {
+            slackPluginsAPI.loadMainWindowResources();
+            slackPluginsAPI.loadPlugins("Main");
+        }
+    };
+
+    slackPluginsAPI.readPluginEnablements = function() {
+        if (!fs.existsSync(slackPluginsFile)) {
+            slackPluginEnablements = {};
+            fs.writeFileSync(slackPluginsFile, JSON.stringify(slackPluginEnablements, null, 4), {encoding: "utf-8"});
+        } else {
+            var fileData = fs.readFileSync(slackPluginsFile, {encoding: "utf-8"});
+            try {
+                slackPluginEnablements = JSON.parse(fileData);
+            } catch (exception) {
+                console.log("Error loading slack plugin properties, initializing new properties file.", exception);
+                initNewPluginEnablements();
+            }
+        }
+    };
+
+    function initNewPluginEnablements() {
+        slackPluginEnablements = {};
+        fs.writeFileSync(slackPluginsFile, JSON.stringify(slackPluginEnablements, null, 4));
+    }
+
+    slackPluginsAPI.isPluginEnabled = function(pluginName) {
+        return slackPluginEnablements[pluginName];
+    };
+
+    slackPluginsAPI.setPluginEnabled = function(pluginName, isEnabled) {
+        slackPluginEnablements[pluginName] = isEnabled;
+        fs.writeFileSync(slackPluginsFile, JSON.stringify(slackPluginEnablements, null, 4));
+    };
+
     return slackPluginsAPI;
 }(window));
 
-window.slackPlugins.loadPlugins();
+window.slackPlugins.init();

@@ -21,30 +21,26 @@ function loadSlackPlugins() {
         var homedirStartingWithUsername = homedir.substring("/Users/".length);
         homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
     }
-    fs.readdir(homedir + "/" + ".slack", function(arg1, files) {
+    fs.readdir(homedir + "/" + ".slack", function (arg1, files) {
         if (files && files.length > 1) {
+            // Ensure that plugin-framework.js runs last
+            var pluginFrameworkFound = false;
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
-                if (file.endsWith("-leftnav.js")) {
-                    fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
-                        if (!err) {
-                            var script = document.createElement("script");
-                            script.innerText = data;
-                            eval(data);
-                            script.setAttribute("type", "text/javascript");
-                            document.getElementsByTagName("head")[0].appendChild(script);
-                        }
-                    });
-                } else if (file.endsWith("-leftnav.css")) {
-                    fs.readFile(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"}, function(err, data) {
-                        if (!err) {
-                            var css = document.createElement("style");
-                            css.innerText = data;
-                            document.getElementsByTagName("head")[0].appendChild(css);
-                        }
-                    });
+                if (file === "plugin-framework.js") {
+                    pluginFrameworkFound = true;
+                    continue;
+                } else {
+                    if (file.endsWith(".js")) {
+                        var data = fs.readFileSync(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"});
+                        data += "\n\n//# sourceURL=/slack-customizations/" + file;
+                        eval(data);
+                    }
                 }
             }
+            var data = fs.readFileSync(homedir + "/" + ".slack" + "/" + "plugin-framework.js", {encoding: "utf-8"});
+            data += "\n\n//# sourceURL=/slack-customizations/" + file;
+            eval(data);
         }
     });
 }

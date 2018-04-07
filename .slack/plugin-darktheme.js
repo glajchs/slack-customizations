@@ -10,11 +10,12 @@ window.slackPluginList.push({
         if (_.filter(window.slackPluginList, function(value) {
                     return value.pluginName === "reactionsHoverPosition";
                 }).length > 0 &&
-                ("true" === window.localStorage.getItem("slackPlugins_" + "reactionsHoverPosition"))) {
+                window.slackPlugins.isPluginEnabled("reactionsHoverPosition")) {
             window.slackPlugins.loadCSSFile("black-message-separator-lines.css");
         }
-        // TODO: how do I do leftnav stuff now?
-        // window.slackPlugins.loadLeftNavCSSFile("black-leftnav.css");
+    },
+    loadLeftNavFunction: function() {
+        window.slackPlugins.loadCSSFile("black-leftnav.css");
     }
 });
 
