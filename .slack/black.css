@@ -1177,13 +1177,13 @@ ts-mention { background: rgba(130, 130, 130, 0.1) !important; color: #e6e6e6 !im
 
 .c-message_attachment__select { border-color: #000; }
 
-.c-message_attachment__select:hover, .c-message_attachment__select:active { border-color: #545454; }
+.c-message_attachment__select:hover, .c-message_attachment__select:active { border-color: #949494; }
 
 .c-message__reply_bar:hover, .c-message__reply_bar--focus { background-color: #222; border-color: #000; }
 
 .c-message__reply_bar:hover .c-message__reply_bar_arrow, .c-message__reply_bar--focus .c-message__reply_bar_arrow { color: #949494; }
 
-.c-message__reply_bar:hover .c-message__reply_bar_view_thread, .c-message__reply_bar--focus .c-message__reply_bar_view_thread { background-color: #545454; }
+.c-message__reply_bar:hover .c-message__reply_bar_view_thread, .c-message__reply_bar--focus .c-message__reply_bar_view_thread { background-color: #222222; }
 
 .c-message__reply_bar_description { color: #949494; }
 
@@ -2001,6 +2001,15 @@ html.no_touch a.filetype_button_web:hover .file_title { color: #e6e6e6; }
 
 #flex_contents .flexpane_tab_toolbar #user_group_edit.user_group_edit--flexpane .tab_action_button { color: #e6e6e6; }
 
+.p-flexpane_header {
+    background: #222222;
+}
+
+.c-app_label {
+    background: #545454;
+    color: white;
+}
+
 .user_group_invite_member_small .add_icon { color: #949494; }
 
 #user_group_member_invite_div .disabled .lfs_item.lfs_token { background-color: #828282; border-color: #828282; }
@@ -2265,7 +2274,7 @@ span.match { background: rgba(191, 54, 12, 0.25); }
 
 #client-ui .searchable_member_list .team_list_item.expanded, #client-ui #team_list .team_list_item.expanded, #member_preview_scroller .team_list_item.expanded { border-color: #363636 !important; }
 
-#client-ui .searchable_member_list .team_list_item:hover, #client-ui #team_list .team_list_item:hover, #member_preview_scroller .team_list_item:hover { border-color: #545454 !important; }
+#client-ui .searchable_member_list .team_list_item:hover, #client-ui #team_list .team_list_item:hover, #member_preview_scroller .team_list_item:hover { border-color: #545454 !important; background: #545454; }
 
 #client-ui .searchable_member_list .team_list_item { border-bottom-color: #000; }
 
@@ -2398,6 +2407,10 @@ span.match { background: rgba(191, 54, 12, 0.25); }
 .p-emoji_picker__emoji_deluxe_label { color: #949494; }
 
 input[type="text"].p-emoji_picker__input:focus { border-color: #545454; box-shadow: none; }
+
+input.c-input_select__filter_input[type="text"] {
+    box-shadow: none;
+}
 
 #message_edit_form .current_status_empty_emoji, #message_edit_form .current_status_empty_emoji_cover, #message_edit_form .emo_menu, #msg_form .current_status_empty_emoji, #msg_form .current_status_empty_emoji_cover, #msg_form .emo_menu, .current_status_container .current_status_empty_emoji, .current_status_container .current_status_empty_emoji_cover, .current_status_container .emo_menu, .current_status_input_container .current_status_empty_emoji, .current_status_input_container .current_status_empty_emoji_cover, .current_status_input_container .emo_menu, .inline_message_input_container .current_status_empty_emoji, .inline_message_input_container .current_status_empty_emoji_cover, .inline_message_input_container .emo_menu, .share_channel_modal_contents .current_status_empty_emoji, .share_channel_modal_contents .current_status_empty_emoji_cover, .share_channel_modal_contents .emo_menu { color: #949494; }
 
@@ -2542,6 +2555,14 @@ input[type="text"].p-emoji_picker__input:focus { border-color: #545454; box-shad
 .channel_prefs__muting_checkbox_label { color: #e6e6e6; }
 
 .channel_prefs__muting_checkbox_label:not(.subtle_silver) { color: #e6e6e6 !important; }
+
+.c-dialog__content, .c-dialog__header, .c-dialog__footer {
+    background: #222222;
+}
+
+.c-dialog__title {
+    color: white;
+}
 
 .notification_prefs_icon::before { color: #e6e6e6; }
 
