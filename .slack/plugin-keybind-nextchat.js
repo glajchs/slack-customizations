@@ -65,7 +65,7 @@ window.slackPluginList.push({
             } else if (type === "channel") {
                 TS.channels.legacyDisplayChannel({id: id});
             } else if (type === "private") {
-                TS.groups.displayGroup({id: id});
+                TS.groups.legacyDisplayGroup({id: id});
             } else if (type === "mpim") {
                 TS.mpims.legacyDisplayMpim({id: id});
             }
