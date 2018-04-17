@@ -1351,6 +1351,10 @@ ts-message .reply_bar:hover { background: #222; border-color: #000; }
 
 .p-message_pane__unread_banner__banner { background: #545454; text-shadow: 0 1px rgba(0, 0, 0, 0.15); }
 
+.p-message_pane .c-message_list:not(.c-virtual_list--scrollbar), .p-message_pane .c-message_list.c-virtual_list--scrollbar > .c-scrollbar__hider {
+    background: inherit !important;
+}
+
 .messages_banner { color: #e6e6e6; text-shadow: 0 1px rgba(0, 0, 0, 0.15); }
 
 .messages_banner a { color: #e6e6e6; }
