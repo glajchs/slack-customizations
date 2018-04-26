@@ -2348,6 +2348,10 @@ span.match { background: rgba(191, 54, 12, 0.25); }
 
 .c-member__other-names--large { color: #949494; }
 
+.c-member_slug--link { background: #424242 !important; }
+
+.c-member_slug--link:hover { background: #424242 !important; color: #40c4ff !important; }
+
 .c-usergroup--small .c-usergroup__icon { background-color: #949494; color: #e6e6e6; }
 
 .c-usergroup__not-in-channel-context--small { color: #949494; }
