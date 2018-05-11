@@ -5,7 +5,7 @@ Some customizations to slack, such as some keybindings, dark theme, etc
 1. Sync this repo locally
 
     `git clone https://github.com/glajchs/slack-customizations.git`
-2. Run the patch-slack.sh from within the slack-customizations folder
+2. Run the patch-slack.sh from within the slack-customizations folder (NOTE: You need to run this step *every time* slack does a desktop app update for new versions, or if you re-install slack)
 
     `cd slack-customizations; ./patch-slack.sh`
 3. Move any files you want run that end with ".css" or ".js" into a folder in your home directory named ".slack".
@@ -44,14 +44,13 @@ See the image at the top to enable different specific plugins.  The current list
 - Keybind - Next/Prev Chat
 - Keybind - New/Open Chat
 
-## How to add your own themes
-Simple, just save your theme as a file ending in ".css" into the $HOME/.slack directory!  To disable other files in that directory from loading (so you don't get 2 themes), rename all the ".css" files to something else, such as ".css_old"
-Some other example themes out there that I've found are:
-- https://github.com/laCour/slack-night-mode/tree/master/css/raw/black.css
-- https://github.com/laCour/slack-night-mode/tree/master/css/raw/variants/*
-- https://github.com/widget-/slack-black-theme/blob/master/custom.css
+## How to create your own plugins:
 
-For those unfamiliar with working with github files.  For any given file, click the "Raw" button, then on the resulting page right-click anywhere on the page and hit "Save as".  Save this into your $HOME:/.slack folder
+You just need a `<something>.js` plugin file that you put in your `$HOME/.slack` directory.  This will get picked up, and you can ingest other files (such as .css files) that you also put into your $HOME/.slack directory.
+
+See [https://github.com/glajchs/slack-customizations/blob/master/.slack/plugin-darktheme.js](.slack/plugin-darktheme.js) for a simple example of loading a CSS file via a new plugin.
+
+Just make sure to generate a unique `pluginId`, give it a unique `pluginName`, and some description sections (so that your plugin will render nicely on the plugin list page).  Also consider using the `prereqsReady` function if your plugin needs to wait for something in Slack to finish loading before it initializes.
 
 ## Uninstallation Instructions
 
