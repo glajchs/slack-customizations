@@ -11,12 +11,38 @@ Some customizations to slack, such as some keybindings, dark theme, etc
 3. Move any files you want run that end with ".css" or ".js" into a folder in your home directory named ".slack".
 
     You can either make a folder there and copy the files from the ".slack" folder in this repo over, or you can make a symlink from this folder to that like this:
-    
+
     `ln -s $PWD/.slack $HOME/`
-    
+
 4. Within the Slack UI, go to File->Preferences (Ctrl+,), and on the left select the "Plugins" section at the bottom.  Enable plugins as a whole, and then individually any set of plugins that you want.
 
    ![Image of Slack Plugins](https://raw.githubusercontent.com/glajchs/slack-customizations/master/slack-plugins-ui.png)
+
+## Example screenshot of plugins
+
+#### Random Emoji (I'm Feeling Lucky)
+
+![Image of Slack Plugins](https://raw.githubusercontent.com/glajchs/slack-customizations/master/slack-plugins-random-emoji.png)
+
+#### Simple Find
+
+![Image of Slack Plugins](https://raw.githubusercontent.com/glajchs/slack-customizations/master/slack-plugins-simple-find.png)
+
+#### 
+
+## Current list of Plugins
+
+See the image at the top to enable different specific plugins.  The current list, in rough order of usefulness for the general public, includes:
+
+- Dark Theme
+- Random Emoji
+- Emoji Big Preview
+- No Laggy Scroll
+- Simple Find
+- Reactions Hover Position
+- Keybind - Close Chat
+- Keybind - Next/Prev Chat
+- Keybind - New/Open Chat
 
 ## How to add your own themes
 Simple, just save your theme as a file ending in ".css" into the $HOME/.slack directory!  To disable other files in that directory from loading (so you don't get 2 themes), rename all the ".css" files to something else, such as ".css_old"
@@ -35,20 +61,6 @@ Treat this as a last resort though, since plugins as a whole, or individual plug
 
 Also The patched ssb-interop.js and index.js files only have a small number of lines appended to the end of them.  If you want you can manually edit these files to remove the ending sections.  Look for the `/** Start Slack Plugins Section **/` line.
 
-
-## Current list of Plugins
-
-See the image at the top to enable different specific plugins.  The current list, in rough order of usefulness for the general public, includes:
-
-- Dark Theme
-- Random Emoji
-- Emoji Big Preview
-- No Laggy Scroll
-- Simple Find
-- Reactions Hover Position
-- Keybind - Close Chat
-- Keybind - Next/Prev Chat
-- Keybind - New/Open Chat
 
 ## How to run slack in devtools mode
 To run slack in a mode that gives you access to the webkit devtool (Inspect Element), go to a terminal, and set the variable SLACK_DEVELOPER_MENU
