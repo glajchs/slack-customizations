@@ -16,17 +16,17 @@ Some customizations to slack, such as some keybindings, dark theme, etc
 
 4. Within the Slack UI, go to File->Preferences (Ctrl+,), and on the left select the "Plugins" section at the bottom.  Enable plugins as a whole, and then individually any set of plugins that you want.
 
-   ![Image of Slack Plugins](https://raw.githubusercontent.com/glajchs/slack-customizations/master/slack-plugins-ui.png)
+   ![Image of Slack Plugins](https://raw.githubusercontent.com/glajchs/slack-customizations/master/readme-files/slack-plugins-ui.png)
 
 ## Example screenshot of plugins
 
 #### Random Emoji (I'm Feeling Lucky)
 
-![Image of Slack Plugins](https://raw.githubusercontent.com/glajchs/slack-customizations/master/slack-plugins-random-emoji.png)
+![Image of Random Emoji Popup](https://raw.githubusercontent.com/glajchs/slack-customizations/master/readme-files/slack-plugin-random-emoji.png)
 
 #### Simple Find
 
-![Image of Slack Plugins](https://raw.githubusercontent.com/glajchs/slack-customizations/master/slack-plugins-simple-find.png)
+![Image of Simple Find](https://raw.githubusercontent.com/glajchs/slack-customizations/master/readme-files/slack-plugin-simple-find.png)
 
 #### 
 

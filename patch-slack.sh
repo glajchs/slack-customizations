@@ -14,7 +14,7 @@ if [ $? == "0" ]; then
     echo "Slack's ssb-interop.js already patched, doing nothing."
 else
     echo "Patching Slack's ssb-interop.js file at ${SLACK_SSB_FILE}"
-    cat ./ssb-interop-snippet-append.js | sudo tee -a "${SLACK_SSB_FILE}" > /dev/null
+    cat ./patch-files/ssb-interop-snippet-append.js | sudo tee -a "${SLACK_SSB_FILE}" > /dev/null
 fi
 
 cat "${SLACK_INDEX_FILE}" | grep loadSlackPlugins > /dev/null
@@ -22,5 +22,5 @@ if [ $? == "0" ]; then
     echo "Slack's index.js already patched, doing nothing."
 else
     echo "Patching Slack's index.js file at ${SLACK_INDEX_FILE}"
-    cat ./index-snippet-append.js | sudo tee -a "${SLACK_INDEX_FILE}" > /dev/null
+    cat ./patch-files/index-snippet-append.js | sudo tee -a "${SLACK_INDEX_FILE}" > /dev/null
 fi
