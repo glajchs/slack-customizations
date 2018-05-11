@@ -1,4 +1,6 @@
 
+/** Start Slack Plugins Section **/
+
 var timesThroughWaitingForHome = 0;
 var waitForEnvironmentHomeVariableInterval = setInterval(function() {
     if (window.process && window.process.env && window.process.env.HOME) {
@@ -47,3 +49,4 @@ function loadSlackPlugins() {
 
 // TODO: occasionally the find stuff is getting bound too early, requiring another refresh (ctrl+r) for it to work
 // window.TS.ensureFullyBooted().then(function() { console.log(arguments); })
+/** End Slack Plugins Section **/
