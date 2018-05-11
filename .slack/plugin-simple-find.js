@@ -5,6 +5,9 @@ window.slackPluginList.push({
     pluginNameFriendly: "Simple Find",
     pluginDescriptionShort: "Adds a simple browser-style find box for the current chat.",
     pluginDescriptionLong: "Adds a simple browser-style find box for the current chat.\nOn Ctrl+f (or cmd+f for macs), as well as ctrl+d (cmd+d), the find box will appear.\nSlack's more UI intensive find is rebound to ctrl+shift+f and ctrl+shift+d (cmd+shift+f for macs).\nNote that Slack hides from the dom old messages, but you can load older messages either by scrolling up, or hitting ctrl+enter with the find box open.",
+    prereqsReady: function() {
+        return (typeof window.Mousetrap === "function" && typeof window.TS === "object" && window.TS != null);
+    },
     loadFunction: function() {
         // Note this module is still a little bit of a work in progress.
         // It still needs work when the content is refreshed by way of loading new pages

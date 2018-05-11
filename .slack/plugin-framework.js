@@ -1,6 +1,7 @@
 window.slackPlugins = window.slackPlugins || (function(window) {
     var slackPluginsAPI = {};
     var slackPluginEnablements = {};
+    var slackPluginsAwaitingPrereqs = [];
 
     var fs = require("fs");
     var homedir = window.process.env.HOME;
@@ -208,13 +209,60 @@ window.slackPlugins = window.slackPlugins || (function(window) {
                         }
                     } else {
                         if (typeof plugin.loadFunction === "function") {
-                            plugin.loadFunction();
+                            if (typeof plugin.prereqsReady == "function") {
+                                if (plugin.prereqsReady()) {
+                                    plugin.loadFunction();
+                                } else {
+                                    queuePluginForPrereqs(plugin);
+                                }
+                            } else {
+                                plugin.loadFunction();
+                            }
                         }
                     }
                 }
             }
         }
+        if (slackPluginsAwaitingPrereqs.length > 0) {
+            startPrereqRetryInterval();
+        }
     };
+
+    function startPrereqRetryInterval() {
+        var prereqRetryCounter = 0;
+        var prereqRetryInterval = setInterval(function() {
+            try {
+                prereqRetryCounter++;
+                for (var i = 0; i < slackPluginsAwaitingPrereqs.length; i++) {
+                    var slackPluginAwaitingPrereqs = slackPluginsAwaitingPrereqs[i];
+                    if (prereqRetryCounter > slackPluginAwaitingPrereqs.numPrereqRetries) {
+                        slackPluginsAwaitingPrereqs.splice(i, 1);
+                        i--;
+                    } else if (slackPluginAwaitingPrereqs.plugin.prereqsReady()) {
+                        slackPluginAwaitingPrereqs.plugin.loadFunction();
+                        slackPluginsAwaitingPrereqs.splice(i, 1);
+                        i--;
+                    }
+                }
+                if (slackPluginsAwaitingPrereqs.length === 0) {
+                    clearInterval(prereqRetryInterval);
+                }
+            } catch (exception) {
+                // no-op
+            }
+        }, 100);
+    }
+
+    function queuePluginForPrereqs(plugin) {
+        var pluginPrereqWrapper = {};
+        pluginPrereqWrapper.plugin = plugin;
+        if (typeof plugin.numPrereqRetries === "number" && plugin.numPrereqRetries > 0 && plugin.numPrereqRetries <= 300) {
+            pluginPrereqWrapper.numPrereqRetries = plugin.numPrereqRetries;
+        } else {
+            pluginPrereqWrapper.numPrereqRetries = 100;
+        }
+        slackPluginsAwaitingPrereqs.push(pluginPrereqWrapper);
+    }
 
     slackPluginsAPI.init = function() {
         slackPluginsAPI.readPluginEnablements();

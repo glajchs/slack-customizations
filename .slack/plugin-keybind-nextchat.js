@@ -5,6 +5,9 @@ window.slackPluginList.push({
     pluginNameFriendly: "Keybind - Next/Prev Chat",
     pluginDescriptionShort: "Adds ctrl+pageup/ctrl+pagedown keybinds to go to the next/previous chats.",
     pluginDescriptionLong: "Adds ctrl+pageup/ctrl+pagedown keybinds to go to the next/previous chats.",
+    prereqsReady: function() {
+        return (typeof window.Mousetrap === "function" && typeof window.TS === "object" && window.TS != null);
+    },
     loadFunction: function() {
         var selectNodeTimeout = -1;
         var newSelectedNode = null;
