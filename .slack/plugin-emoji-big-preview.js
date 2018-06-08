@@ -25,7 +25,8 @@ window.slackPluginList.push({
             imageBigBackdrop.css("left", "0px");
             imageBigBackdrop.css("width", "100%");
             imageBigBackdrop.css("height", "100%");
-            imageBigBackdrop.css("backgroundColor", "rgba(255, 255, 255, 0.2)");
+            imageBigBackdrop.css("backgroundColor", "rgba(255, 255, 255, 0.6)");
+            imageBigBackdrop.css("cursor", "pointer");
             imageBigBackdrop.appendTo("body");
             var imageBigWrapper = $("<div></div>");
             imageBigWrapper.addClass("slackPluginsEmojiLarge");
@@ -40,6 +41,7 @@ window.slackPluginList.push({
                 imageBigWrapper.css("background-image", backgroundImage);
                 imageBigWrapper.css("background-position", backgroundPosition);
                 imageBigWrapper.css("background-size", backgroundSize);
+                imageBigWrapper.css("background-color", $("body").css("background-color"));
             } else {
                 var imageBig = $("<img></img>");
                 imageBig.attr("src", emojiUrl);
