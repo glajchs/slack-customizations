@@ -9,7 +9,11 @@ window.slackPlugins = window.slackPlugins || (function(window) {
     // Trim to just be the actual homedir instead.
     if (homedir.startsWith("/Users/")) {
         var homedirStartingWithUsername = homedir.substring("/Users/".length);
-        homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
+        if (homedirStartingWithUsername.indexOf("/") === -1) {
+            homedir = "/Users/" + homedirStartingWithUsername;
+        } else {
+            homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
+        }
     }
     var slackPluginsFile = homedir + "/" + ".slack" + "/" + ".slackPluginsEnabled";
 
