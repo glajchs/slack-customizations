@@ -5,6 +5,9 @@ window.slackPluginList.push({
     pluginNameFriendly: "Dark Theme",
     pluginDescriptionShort: "A Dark Theme for Slack based on laCour's slack-night-theme",
     pluginDescriptionLong: "A Dark Theme for Slack based on laCour's slack-night-theme",
+    prereqsReady: function() {
+        return (typeof window._ === "function" && typeof window._.VERSION === "string");
+    },
     loadFunction: function() {
         window.slackPlugins.loadCSSFile("black.css");
         if (_.filter(window.slackPluginList, function(value) {
