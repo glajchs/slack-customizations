@@ -2310,9 +2310,9 @@ span.match { background: rgba(191, 54, 12, 0.25); }
 
 #whats_new_tab .flex_heading_controls label { color: #949494; }
 
-.c-member__display-name, .c-team__display-name, .c-usergroup__handle { color: #e6e6e6; }
+.c-member__display-name, .c-team__display-name, .c-usergroup__handle, .c-unified_member__display-name { color: #e6e6e6; }
 
-.c-member__current-status--small::before, .c-member__secondary-name--large + .c-member__current-status--large::before, .c-member__secondary-name--medium + .c-member__current-status--medium::before { color: #e6e6e6; }
+.c-member__current-status--small::before, .c-member__secondary-name--large + .c-member__current-status--large::before, .c-member__secondary-name--medium + .c-member__current-status--medium::before, .c-unified_member__secondary-name { color: #e6e6e6; }
 
 .c-member .external_team_badge { background-color: #545454; box-shadow: 0 0 0 2px #545454; }
 
@@ -2347,6 +2347,8 @@ span.match { background: rgba(191, 54, 12, 0.25); }
 .c-member__display-name--large, .c-member__title--large { color: #e6e6e6; }
 
 .c-member__other-names--large { color: #949494; }
+
+.app_preview_link_slug, .internal_member_link, .internal_user_group_link { background: #424242 !important; }
 
 .c-member_slug--link { background: #424242 !important; color: #949494 !important; }
 

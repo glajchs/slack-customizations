@@ -6,7 +6,7 @@ window.slackPluginList.push({
     pluginDescriptionShort: "Adds ctrl+w keybind to close the current chat window.",
     pluginDescriptionLong: "Adds ctrl+w keybind to close the current chat window.\nNote that closing multiple direct messages (mpims) as well as channels leaves them.  For channels you need to re-join (open), but for mpims, you need a re-invite to join.",
     prereqsReady: function() {
-        return (typeof window.TS === "object" && window.TS != null);
+        return (typeof window.TS === "object" && window.TS != null && typeof window.$ === "function");
     },
     loadFunction: function() {
         $("body").bind("keydown.slackcustomizations", function(event) {

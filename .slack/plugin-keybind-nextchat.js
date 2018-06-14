@@ -6,7 +6,7 @@ window.slackPluginList.push({
     pluginDescriptionShort: "Adds ctrl+pageup/ctrl+pagedown keybinds to go to the next/previous chats.",
     pluginDescriptionLong: "Adds ctrl+pageup/ctrl+pagedown keybinds to go to the next/previous chats.",
     prereqsReady: function() {
-        return (typeof window.Mousetrap === "function" && typeof window.TS === "object" && window.TS != null);
+        return (typeof window.Mousetrap === "function" && typeof window.TS === "object" && window.TS != null && typeof window.$ === "function");
     },
     loadFunction: function() {
         var selectNodeTimeout = -1;

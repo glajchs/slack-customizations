@@ -5,6 +5,9 @@ window.slackPluginList.push({
     pluginNameFriendly: "No Laggy Scroll",
     pluginDescriptionShort: "Disables the laggy animation for scrolling when using page+up/page+down",
     pluginDescriptionLong: "Disables the laggy animation for scrolling when using page+up/page+down",
+    prereqsReady: function() {
+        return typeof window.$ === "function";
+    },
     loadFunction: function() {
         var scrollerDivSelector = ".message_pane_scroller .c-scrollbar__hider";
         var messageViewportSelector = ".c-virtual_list--scrollbar";

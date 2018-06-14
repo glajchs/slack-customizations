@@ -5,6 +5,9 @@ window.slackPluginList.push({
     pluginNameFriendly: "Emoji Big Preview",
     pluginDescriptionShort: "Upon clicking an emoji (or alt-clicking for voting style emojis), show an enlarged preview of the image.",
     pluginDescriptionLong: "Upon clicking an emoji (or alt-clicking for voting style emojis), show an enlarged preview of the image.  This helps when emojis are too hard to see when they are small.  Note that Slack has a max width and height limit of 128px for emojis, as well as 64KB total size, so the enlarge image is probably still pretty poor quality.",
+    prereqsReady: function() {
+        return typeof window.$ === "function";
+    },
     loadFunction: function() {
         $(document).off("click.slackPluginsEmojiBigPreview");
         $(document).on("click.slackPluginsEmojiBigPreview", ".c-custom_status .emoji, .c-message__body .emoji, .c-custom_status .emoji-sizer, .c-reaction_bar .emoji-sizer", function(event) {

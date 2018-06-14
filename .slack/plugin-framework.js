@@ -1,3 +1,5 @@
+// An example way to create a random pluginId on linux:
+// cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -1
 window.slackPlugins = window.slackPlugins || (function(window) {
     var slackPluginsAPI = {};
     var slackPluginEnablements = {};
