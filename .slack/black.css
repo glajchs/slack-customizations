@@ -1666,6 +1666,23 @@ label.p-search_filter__option.p-search_filter__option--suggestion:hover {
     color: white;
 }
 
+ts-message.active:not(.standalone):not(.multi_delete_mode):not(.highlight):not(.new_reply):not(.show_broadcast_indicator), ts-message.message--focus:not(.standalone):not(.multi_delete_mode):not(.highlight):not(.new_reply):not(.show_broadcast_indicator), ts-message:hover:not(.standalone):not(.multi_delete_mode):not(.highlight):not(.new_reply):not(.show_broadcast_indicator) {
+    background: none;
+    border-color: #545454;
+}
+
+ts-thread .collapse_inline_thread_container:hover, ts-thread .view_all_replies_container:hover {
+    background: none;
+    border-color: #545454;
+    cursor: pointer;
+}
+
+ts-thread .collapse_inline_thread_container:hover, ts-thread .view_all_replies_container:hover a {
+    text-decoration: underline;
+    color: #c7c7c7;
+}
+
+
 .c-snippet__code .CodeMirror-code > div:before { background-color: #363636; border-right: 1px solid #363636; color: #949494; }
 
 .file_list_item.snippet .snippet_preview { background: #000; }
