@@ -1413,6 +1413,10 @@ code { background-color: #000; border: 1px solid #363636; color: #e6e6e6; }
     box-shadow: inset 0 0 0 1px #919193;
 }
 
+.c-pillow_file__title {
+    color: #949494;
+}
+
 .c-pillow_file_container {
     background: inherit;
     border: 1px solid rgba(0,0,0,.1);
@@ -2634,9 +2638,9 @@ span.match { background: rgba(191, 54, 12, 0.25); }
 
 .app_preview_link_slug, .internal_member_link, .internal_user_group_link { background: #424242 !important; }
 
-.c-member_slug--link { background: #424242 !important; color: #949494 !important; }
+.c-member_slug--link, .c-mrkdwn__user_group--link { background: #424242 !important; color: #949494 !important; }
 
-.c-member_slug--link:hover { background: #424242 !important; color: #40c4ff !important; }
+.c-member_slug--link:hover, .c-mrkdwn__user_group--link:hover { background: #424242 !important; color: #40c4ff !important; }
 
 .c-usergroup--small .c-usergroup__icon { background-color: #949494; color: #e6e6e6; }
 
