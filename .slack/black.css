@@ -391,6 +391,10 @@ input[disabled], input[readonly], textarea[disabled], textarea[readonly] { backg
 
 #special_formatting_text { color: #949494; }
 
+.p-share_dialog_message_input {
+    color: white;
+}
+
 #message_edit_container .message_input, .inline_message_input_container .message_input { color: #e6e6e6; }
 
 .inline_message_input_container .ql-container { border-color: #545454; }
@@ -446,6 +450,24 @@ input[disabled], input[readonly], textarea[disabled], textarea[readonly] { backg
 #menu #menu_items_scroller #menu_items li:hover a { background: #222; color: #e6e6e6; }
 
 .supports_custom_scrollbar .team_menu.slack_menu .menu_content { background: #363636; border: 1px solid #222; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); color: #e6e6e6; }
+
+.menu ul li a:not(.inline_menu_link) {
+    color: #e6e6e6;
+}
+
+.submenu[data-origin-id=member_current_status_item] {
+    -webkit-transform: translate(-7px, -14px) !important;
+    transform: translate(-7px, -14px) !important;
+}
+
+.submenu {
+    -webkit-transform: translate(-7px) !important;
+    transform: translate(-7px) !important;
+}
+
+.c-menu_item__button, .c-menu_item__button:link, .c-menu_item__button:visited {
+    color: #e6e6e6 !important;
+}
 
 .menu { background: #363636; border: 1px solid #222; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); color: #e6e6e6; }
 
@@ -2576,6 +2598,62 @@ span.match { background: rgba(191, 54, 12, 0.25); }
 
 #convo_tab textarea.message_input { color: #e6e6e6; }
 
+
+#convo_tab.focus .message_input, #convo_tab.focus .inline_file_upload:not(:hover):not(.active) { border-color: #363636; }
+
+#convo_tab .message_input { background: padding-box #545454; border-color: #424242; border-left: 0; color: #e6e6e6; }
+
+#convo_tab .message_input.focus ~ .msg_mentions_button:not(.hover) { color: #e6e6e6; }
+
+#convo_tab .msg_mentions_button { color: #949494; }
+
+#convo_tab .msg_mentions_button:hover { color: #e6e6e6; }
+
+.message_input { background: #545454; border-color: #424242; color: #e6e6e6; }
+
+.message_input::-webkit-input-placeholder { color: #e6e6e6 !important; -webkit-filter: none; filter: none; opacity: 0.5; }
+
+.message_input::-moz-placeholder { color: #e6e6e6 !important; filter: none; opacity: 0.5; }
+
+.message_input::placeholder { color: #e6e6e6 !important; filter: none; opacity: 0.5; }
+
+.message_input[data-placeholder]:empty::before { color: #e6e6e6 !important; }
+
+.message_input:focus, .message_input.focus { border-color: #363636; }
+
+.message_input:focus + .inline_file_upload:not(:hover):not(.active), .message_input.focus + .inline_file_upload:not(:hover):not(.active) { border-color: #363636; }
+
+.message_input + .inline_file_upload:not(:hover):not(.active) { border-color: #424242; }
+
+.message_input + .inline_file_upload.focus-ring:not(:hover):not(.active) { border-color: #424242; }
+
+.message_input.offline:not(.pretend-to-be-online) { background-color: #363636 !important; color: #949494; }
+
+.message_input.disabled, .message_input.ql-disabled { background-color: #363636; border-color: #363636; color: #949494; }
+
+#msg_input_message { background-color: #363636; color: #e6e6e6; }
+
+.inline_file_upload {
+    color: #919193;
+    border-color: #424242;
+    background: #424242;
+}
+
+.inline_file_upload:focus {
+    background: #424242;
+    border-color: #363636;
+    color: #e6e6e6;
+}
+
+#reply_container.upload_in_threads .inline_message_input_container {
+    background: #424242;
+}
+
+.inline_message_input_container.with_file_upload {
+
+    border-color: #424242;
+}
+
 #reply_container .inline_message_input_container .message_input div, #reply_container .inline_message_input_container textarea, .reply_input_container .inline_message_input_container .message_input div, .reply_input_container .inline_message_input_container textarea { border-color: #363636; color: #e6e6e6; }
 
 #reply_container .inline_message_input_container .message_input div:active, #reply_container .inline_message_input_container .message_input div:focus, #reply_container .inline_message_input_container textarea:active, #reply_container .inline_message_input_container textarea:focus, .reply_input_container .inline_message_input_container .message_input div:active, .reply_input_container .inline_message_input_container .message_input div:focus, .reply_input_container .inline_message_input_container textarea:active, .reply_input_container .inline_message_input_container textarea:focus { border-color: #000; }
@@ -2898,7 +2976,7 @@ input.c-input_select__filter_input[type="text"] {
 
 #im_browser .im_browser_row.disabled { color: #949494; }
 
-#im_browser #im_list_container:not(.keyboard_active).not_scrolling .im_browser_row:not(.disabled_dm):hover, #im_browser #im_browser .im_browser_row.highlighted { background: #000 !important; border: 1px solid #545454 !important; }
+#im_browser #im_list_container:not(.keyboard_active).not_scrolling .im_browser_row:not(.disabled_dm):hover, #im_browser .im_browser_row.highlighted { background: #000 !important; border: 1px solid #545454 !important; }
 
 #im_browser_tokens { background: #545454; border: 1px solid #828282; }
 
@@ -2907,6 +2985,10 @@ input.c-input_select__filter_input[type="text"] {
 #im_browser_tokens .member_token { background: #222; border: 1px solid #000; color: #e6e6e6; }
 
 #im_browser_tokens .member_token.ra { background: #bf360c; }
+
+#im_browser .im_browser_row.multiparty {
+    color: #e6e6e6 !important;
+}
 
 .fs_modal_file_viewer_header { background-color: #363636; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5); }
 
