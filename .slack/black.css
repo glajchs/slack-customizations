@@ -815,7 +815,11 @@ input[disabled], input[readonly], textarea[disabled], textarea[readonly] { backg
 
 .channel_header .blue_on_hover:hover { color: #e6e6e6; }
 
-#client_body:not(.onboarding)::before { background: #222; border-bottom: 1px solid #363636; box-shadow: inset 1px 0 0 0 #222; }
+#client_body:not(.onboarding)::before {
+    background: #222 !important;
+    border-bottom: 1px solid #363636 !important;
+    box-shadow: inset 1px 0 0 0 #222 !important;
+}
 
 .messages_header { color: #e6e6e6; }
 
