@@ -1645,6 +1645,10 @@ code { background-color: #000; border: 1px solid #363636; color: #e6e6e6; }
     color: white;
 }
 
+.c-search__input_and_close {
+    background-color: #303030;
+}
+
 .c-search_autocomplete__suggestion_content {
     color: #949494;
 }
@@ -1661,7 +1665,7 @@ code { background-color: #000; border: 1px solid #363636; color: #e6e6e6; }
 
 .c-search__input_box {
     color: #949494;
-    background: #303030;
+    background: #303030 !important;
     padding-left: 0px;
     padding-right: 0px;
 }
@@ -2732,6 +2736,10 @@ span.match { background: rgba(191, 54, 12, 0.25); }
 #client-ui .searchable_member_list .team_list_item { border-bottom-color: #000; }
 
 #client-ui .searchable_member_list .team_list_item:hover { background: #545454; }
+
+.searchable_member_list_filter .faux_input {
+    color: #e6e6e6;
+}
 
 #convo_tab #convo_tab_btns .close_flexpane:focus, #convo_tab #convo_tab_btns .close_flexpane:hover { color: #e6e6e6; }
 
