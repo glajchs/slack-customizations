@@ -21,6 +21,7 @@ window.slackPluginList.push({
         var isKeyRepeatMode = false;
         var isKeyAlreadyDown = false;
 
+
         var scrollerDivSelector = ".message_pane_scroller .c-scrollbar__hider";
         var messageViewportSelector = ".c-virtual_list--scrollbar";
 

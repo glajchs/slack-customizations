@@ -15,6 +15,7 @@ window.slackPluginList.push({
         // TODO: mac key binds should consider "cmd" instead of control.  Maybe use Mousetrap here?
         Mousetrap.bind(['ctrl+n'], function() {
             TS.key_triggers.getFromCode(75).func();
+            // TS.ui.im_browser.start();
         });
         // TODO: mac key binds should consider "cmd" instead of control.  Maybe use Mousetrap here?
         Mousetrap.bind(['ctrl+e'], function() {
