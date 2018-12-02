@@ -45,7 +45,7 @@ function loadSlackPlugins() {
                 }
             }
             var data = fs.readFileSync(homedir + "/" + ".slack" + "/" + "plugin-framework.js", {encoding: "utf-8"});
-            data += "\n\n//# sourceURL=/slack-customizations/" + file;
+            data += "\n\n//# sourceURL=/slack-customizations/plugin-framework.js";
             eval(data);
         }
     });
