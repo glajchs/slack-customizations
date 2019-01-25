@@ -2503,8 +2503,71 @@ html.no_touch a.filetype_button_web:hover .file_title { color: #e6e6e6; }
 
 #flex_contents .flexpane_tab_toolbar #user_group_edit.user_group_edit--flexpane .tab_action_button { color: #e6e6e6; }
 
+.c-fullscreen_modal__content {
+    background: #222222;
+}
+
+.c-fullscreen_modal__header {
+    background: #151515;
+    color: #949494;
+}
+
+.c-fullscreen_modal__body {
+    color: #e6e6e6;
+}
+
+.p-channel_options--channel_purpose .c-input_textarea {
+    color: #949494;
+}
+
+.channel_options_modal .c-fullscreen_modal__title {
+    color: #949494;
+}
+
+.channel_option_item .title {
+    color: #949494;
+}
+
+.channel_option_item {
+    border-top-color: #363636;
+}
+
+.channel_option_item:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
 .p-flexpane_header {
     background: #222222;
+    border-bottom: 1px solid #363636;
+}
+
+.p-download_item {
+    color: #868686;
+}
+
+.p-download_item__container .p-download_item__name_row {
+    color: #868686;
+}
+
+.p-downloads_list__header_items {
+    color: #949494;
+}
+
+.p-downloads_list__shift_hint {
+    background: linear-gradient(180deg,hsla(0,0%,100%,0),#525252 25%,#525252);
+    color: #949494;
+}
+
+.p-download_item:hover {
+    border-color: #525252;
+}
+
+.p-download_item__action_icon {
+    box-shadow: 0 0 0 3px #4d4d4d;
+}
+
+.p-download_item__actions {
+    background: inherit;
 }
 
 .c-app_label {
@@ -3442,7 +3505,7 @@ ts-jumper input[type=text]::-webkit-input-placeholder, ts-jumper input[type=text
 
 ts-jumper ol li { color: #e6e6e6; }
 
-ts-jumper ol li .channel_name, ts-jumper ol li .member_real_name, ts-jumper ol li .member_username, ts-jumper ol li .team_username { color: #949494; }
+ts-jumper ol li .channel_name, ts-jumper ol li .member_real_name, ts-jumper ol li .member_username, ts-jumper ol li .team_username, ts-jumper ol li .view_name { color: #949494; }
 
 ts-jumper ol li .channel_not_member, ts-jumper ol li .team_username, ts-jumper ol li .member_real_name + .member_username, ts-jumper ol li .member_username + .member_real_name, ts-jumper ol li ts-icon { color: #949494; }
 
