@@ -2133,6 +2133,10 @@ ts-thread .new_reply_indicator .blue_dot { color: #bf360c; }
     color: inherit;
 }
 
+.c-file__title {
+    color: inherit;
+}
+
 #file_reply_container .reply_container_info .reply_broadcast_buttons_container .reply_broadcast_label_container, #reply_container .reply_container_info .reply_broadcast_buttons_container .reply_broadcast_label_container, .reply_input_container .reply_container_info .reply_broadcast_buttons_container .reply_broadcast_label_container { color: #949494; }
 
 #unread_msgs_scroller_div::after { background: transparent; }
