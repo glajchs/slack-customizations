@@ -3799,6 +3799,10 @@ a.two_factor_choice:hover .two_factor_link, a.two_factor_choice:link:hover .two_
 
 @media screen and (max-width: 768px) { .admin_list_item.expanded .sub_action + .sub_action:hover::before, .admin_list_item.expanded .sub_action + .sub_action:hover::after { color: #949494; } }
 
+.c-email__sender_collapsed, .c-email__title_collapsed, .c-email__header_name {
+    color: #e6e6e6;
+}
+
 .billing_selection { border-color: #000; color: #e6e6e6 !important; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); }
 
 .billing_selection:hover { border-color: #828282; }
