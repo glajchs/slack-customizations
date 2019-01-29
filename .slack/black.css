@@ -2121,6 +2121,18 @@ ts-thread .new_reply_indicator .blue_dot { color: #bf360c; }
     margin-left: 35px;
 }
 
+.p-threads_footer__input .p-message_input_field {
+    background: inherit;
+}
+
+.p-threads_footer__input--legacy .p-message_input_plus {
+    background: inherit;
+}
+
+.p-threads_flexpane__header_channel_name {
+    color: inherit;
+}
+
 #file_reply_container .reply_container_info .reply_broadcast_buttons_container .reply_broadcast_label_container, #reply_container .reply_container_info .reply_broadcast_buttons_container .reply_broadcast_label_container, .reply_input_container .reply_container_info .reply_broadcast_buttons_container .reply_broadcast_label_container { color: #949494; }
 
 #unread_msgs_scroller_div::after { background: transparent; }
