@@ -2129,7 +2129,19 @@ ts-thread .new_reply_indicator .blue_dot { color: #bf360c; }
     background: inherit;
 }
 
+.p-threads_footer__input--legacy .p-message_input_file_button {
+    background: inherit;
+}
+
 .p-threads_flexpane__header_channel_name {
+    color: inherit;
+}
+
+.p-threads_flexpane__separator_count {
+    color: inherit;
+}
+
+.p-message_pane__foreword__description, .p-message_pane__limited_history_alert {
     color: inherit;
 }
 
