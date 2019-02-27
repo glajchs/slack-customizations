@@ -2839,6 +2839,22 @@ span.match { background: rgba(191, 54, 12, 0.25); }
 
 #team_tab #member_preview_scroller { background-color: #222; }
 
+#team_tab #member_preview_scroller .member_details .member_name {
+    color: inherit;
+}
+
+.p-custom_status_input__duration_picker_select .c-input_select__chevron, .p-custom_status_input__duration_picker_select .c-input_select__filter_input::placeholder, .p-custom_status_input__duration_picker_select .c-input_select__selected_value--placeholder {
+    color: white;
+}
+
+.p-custom_status_input__duration_picker_select .c-input_select__chevron, .p-custom_status_input__duration_picker_select .c-input_select__filter_input::placeholder, .p-custom_status_input__duration_picker_select .c-input_select__selected_value--placeholder {
+    color: white;
+}
+
+.p-custom_status_input__dialog .p-custom_status_input__custom_expiration_picker .c-input_select__filter_input::placeholder, .p-custom_status_input__dialog .p-custom_status_input__custom_expiration_picker .c-input_select__selected_value--placeholder, .p-custom_status_input__dialog .p-custom_status_input__duration_picker_select .c-input_select__filter_input::placeholder, .p-custom_status_input__dialog .p-custom_status_input__duration_picker_select .c-input_select__selected_value--placeholder {
+    padding-left: 12px;
+}
+
 #member_preview_scroller .member_details .member_name_and_presence .member_name, #member_preview_web_container .member_details .member_name_and_presence .member_name, .menu_member_header .member_details .member_name_and_presence .member_name { color: #e6e6e6; }
 
 #member_preview_scroller .member_details .member_title, #member_preview_web_container .member_details .member_title, .menu_member_header .member_details .member_title { color: #e6e6e6; }
