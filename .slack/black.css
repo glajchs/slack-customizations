@@ -1864,6 +1864,27 @@ ts-thread .collapse_inline_thread_container:hover, ts-thread .view_all_replies_c
     color: #c7c7c7;
 }
 
+.CodeMirror {
+    background: black;
+    color: #e6e6e6;
+}
+
+.c-pillow_file_container, .c-pillow_file_container:hover {
+    border-color: #363636;
+}
+
+.c-message_kit__file__meta {
+    color: #e6e6e6;
+}
+
+.c-pillow_file__snippet__content .CodeMirror-code>div:before {
+    color: #949494;
+    border-right: 1px solid #222222;
+}
+
+.c-pillow_file__snippet__content .CodeMirror {
+    color: #949494;
+}
 
 .c-snippet__code .CodeMirror-code > div:before { background-color: #363636; border-right: 1px solid #363636; color: #949494; }
 
