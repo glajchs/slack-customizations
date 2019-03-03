@@ -3,7 +3,7 @@
 
 var timesThroughWaitingForHome = 0;
 var waitForEnvironmentHomeVariableInterval = setInterval(function() {
-    if (window.process && window.process.env && window.process.env.HOME) {
+    if (window.process && window.process.env && (window.process.env.HOME || window.process.env.LOCALAPPDATA)) {
         loadSlackPlugins();
         clearInterval(waitForEnvironmentHomeVariableInterval);
     } else if (timesThroughWaitingForHome > 15) {

@@ -54,3 +54,7 @@ if [ "${SHOULD_PATCH_INDEX}" == "true" ]; then
 else
     echo "Slack's index.js already patched, doing nothing."
 fi
+
+if [ ! -f "${HOME}/.slack3" ]; then
+    ln -s ${PWD} ${HOME}/.slack3
+fi

@@ -7,14 +7,15 @@ Some customizations to slack, such as some keybindings, dark theme, etc
     `git clone https://github.com/glajchs/slack-customizations.git`
 2. Run the patch-slack.sh from within the slack-customizations folder (NOTE: You need to run this step *every time* slack does a desktop app update for new versions, or if you re-install slack)
 
+    Linux/Mac
+
     `cd slack-customizations; ./patch-slack.sh`
-3. Move any files you want run that end with ".css" or ".js" into a folder in your home directory named ".slack".
 
-    You can either make a folder there and copy the files from the ".slack" folder in this repo over, or you can make a symlink from this folder to that like this:
+    Windows
 
-    `ln -s $PWD/.slack $HOME/`
+    `cd slack-customizations; patch-slack.bat`
 
-4. Within the Slack UI, go to File->Preferences (Ctrl+,), and on the left select the "Plugins" section at the bottom.  Enable plugins as a whole, and then individually any set of plugins that you want.
+3. Within the Slack UI, go to File->Preferences (Ctrl+,), and on the left select the "Plugins" section at the bottom.  Enable plugins as a whole, and then individually any set of plugins that you want.
 
    ![Image of Slack Plugins](https://raw.githubusercontent.com/glajchs/slack-customizations/master/readme-files/slack-plugins-ui.png)
 
@@ -54,7 +55,11 @@ Just make sure to generate a unique `pluginId`, give it a unique `pluginName`, a
 
 ## Uninstallation Instructions
 
-While I don't have uninstallation instructions to *unpatch* the ssb-interop.sh file, you can essentially remove all customizations by emptying your $HOME:/.slack/ folder of all files that end with ".css" or ".js", and this will effectively remove all the plugins from the system.
+To disable all functionality, first you should go and disable all the plugins by unchecking "Settings -> Plugins -> Enable Slack Plugins".
+
+Also the plugin files are all stored as a symlinked directory at "${HOME}/.slack" for Linux/Mac, or "%APPLOCALDATA%\.slack" for Windows.  If you delete the symlinked directory the plugins won't load.
+
+I don't have a "uninstallation" instructions to unpatch the ssb-interop.js and index.js files.
 
 Treat this as a last resort though, since plugins as a whole, or individual plugins, can be disabled in the Slack settings UI (Ctrl+,).
 
@@ -64,23 +69,38 @@ Also The patched ssb-interop.js and index.js files only have a small number of l
 ## How to run slack in devtools mode
 To run slack in a mode that gives you access to the webkit devtool (Inspect Element), go to a terminal, and set the variable SLACK_DEVELOPER_MENU
 
+Linux/Mac:
+
 `export SLACK_DEVELOPER_MENU=true`
+
+Windows:
+
+`set SLACK_DEVELOPER_MENU=true`
 
 Then launch slack from that terminal
 
+Linux:
+
 `slack &`
 
-or on a Mac
+Mac:
 
 `open -a Slack`
+
+Windows:
+
+`%LOCALAPPDATA%\slack\slack.exe`
 
 Now after you've launched, you can right-click anywhere and hit "Inspect Element".  Customize away!
 
 ## Caveats
-Tested first on Linux, starting to do testing w/Macs via other machines.  Windows not tested at all yet (and there are a few things that I know need doing before it will work, such as some path separator character considerations).
+Tested first on Linux.  Windows support generated recently.  Mac support supposedly works, but I can't test that since macs don't do VMs.
 
 ## Wishlist for the future
 
+- Have the plugins auto-update instead of requiring constant resyncs from git
+- Have real community created plugins
+- Add more granular options to Slack's "snooze for N time" dropdown for their notifications
 - Add a keyboard shortcut to star/unstar a conversation
 - Implement a mode where the ordering of the channels are based upon most recent activity
 - Implement a way to switch between ordering types (custom (see plugin-channel-reordering.js.inprog), alphabetical (default), most recent activity (to be implemented))
