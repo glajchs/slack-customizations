@@ -55,6 +55,6 @@ else
     echo "Slack's index.js already patched, doing nothing."
 fi
 
-if [ ! -f "${HOME}/.slack3" ]; then
-    ln -s ${PWD} ${HOME}/.slack3
+if [ ! -f "${HOME}/.slack" ]; then
+    ln -s ${PWD} ${HOME}/.slack
 fi
