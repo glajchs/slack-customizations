@@ -16,18 +16,28 @@ var waitForEnvironmentHomeVariableInterval = setInterval(function() {
 
 function loadSlackPlugins() {
     var fs = require("fs");
-    var homedir = window.process.env.HOME;
-    // For some stupid reason, "env HOME" isn't actually the homedir for macs...it's some weird slack directory 6 levels deep beyond that.
-    // Trim to just be the actual homedir instead.
-    if (homedir.startsWith("/Users/")) {
-        var homedirStartingWithUsername = homedir.substring("/Users/".length);
-        if (homedirStartingWithUsername.indexOf("/") === -1) {
-            homedir = "/Users/" + homedirStartingWithUsername;
-        } else {
-            homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
+    var homedir;
+    var fileSeparator = "/";
+    if (window.process.env.LOCALAPPDATA) {
+        // windows
+        homedir = window.process.env.LOCALAPPDATA;
+        fileSeparator = "\\";
+    } else {
+        // linux or mac
+        homedir = window.process.env.HOME;
+
+        // For some stupid reason, "env HOME" isn't actually the homedir for macs...it's some weird slack directory 6 levels deep beyond that.
+        // Trim to just be the actual homedir instead.
+        if (homedir.startsWith("/Users/")) {
+            var homedirStartingWithUsername = homedir.substring("/Users/".length);
+            if (homedirStartingWithUsername.indexOf("/") === -1) {
+                homedir = "/Users/" + homedirStartingWithUsername;
+            } else {
+                homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
+            }
         }
     }
-    fs.readdir(homedir + "/" + ".slack", function (arg1, files) {
+    fs.readdir(homedir + fileSeparator + ".slack", function (arg1, files) {
         if (files && files.length > 1) {
             // Ensure that plugin-framework.js runs last
             var pluginFrameworkFound = false;
@@ -38,13 +48,13 @@ function loadSlackPlugins() {
                     continue;
                 } else {
                     if (file.endsWith(".js")) {
-                        var data = fs.readFileSync(homedir + "/" + ".slack" + "/" + file, {encoding: "utf-8"});
+                        var data = fs.readFileSync(homedir + fileSeparator + ".slack" + fileSeparator + file, {encoding: "utf-8"});
                         data += "\n\n//# sourceURL=/slack-customizations/" + file;
                         eval(data);
                     }
                 }
             }
-            var data = fs.readFileSync(homedir + "/" + ".slack" + "/" + "plugin-framework.js", {encoding: "utf-8"});
+            var data = fs.readFileSync(homedir + fileSeparator + ".slack" + fileSeparator + "plugin-framework.js", {encoding: "utf-8"});
             data += "\n\n//# sourceURL=/slack-customizations/plugin-framework.js";
             eval(data);
         }

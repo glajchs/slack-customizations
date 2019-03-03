@@ -6,18 +6,28 @@ window.slackPlugins = window.slackPlugins || (function(window) {
     var slackPluginsAwaitingPrereqs = [];
 
     var fs = require("fs");
-    var homedir = window.process.env.HOME;
-    // For some stupid reason, "env HOME" isn't actually the homedir for macs...it's some weird slack directory 6 levels deep beyond that.
-    // Trim to just be the actual homedir instead.
-    if (homedir.startsWith("/Users/")) {
-        var homedirStartingWithUsername = homedir.substring("/Users/".length);
-        if (homedirStartingWithUsername.indexOf("/") === -1) {
-            homedir = "/Users/" + homedirStartingWithUsername;
-        } else {
-            homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
+    var homedir;
+    var fileSeparator = "/";
+    if (window.process.env.LOCALAPPDATA) {
+        // windows
+        homedir = window.process.env.LOCALAPPDATA;
+        fileSeparator = "\\";
+    } else {
+        // linux or mac
+        homedir = window.process.env.HOME;
+
+        // For some stupid reason, "env HOME" isn't actually the homedir for macs...it's some weird slack directory 6 levels deep beyond that.
+        // Trim to just be the actual homedir instead.
+        if (homedir.startsWith("/Users/")) {
+            var homedirStartingWithUsername = homedir.substring("/Users/".length);
+            if (homedirStartingWithUsername.indexOf("/") === -1) {
+                homedir = "/Users/" + homedirStartingWithUsername;
+            } else {
+                homedir = "/Users/" + homedirStartingWithUsername.substring(0, homedirStartingWithUsername.indexOf("/"));
+            }
         }
     }
-    var slackPluginsFile = homedir + "/" + ".slack" + "/" + ".slackPluginsEnabled";
+    var slackPluginsFile = homedir + fileSeparator + ".slack" + fileSeparator + ".slackPluginsEnabled";
 
     var prefsDialogInitializedIntervalMaxTries;
     var prefsDialogInitializedIntervalCounter;
@@ -185,7 +195,7 @@ window.slackPlugins = window.slackPlugins || (function(window) {
     }
 
     slackPluginsAPI.loadCSSFile = function(filepart) {
-        fs.readFile(homedir + "/" + ".slack" + "/" + filepart, {encoding: "utf-8"}, function(err, data) {
+        fs.readFile(homedir + fileSeparator + ".slack" + fileSeparator + filepart, {encoding: "utf-8"}, function(err, data) {
             if (!err) {
                 var css = document.createElement("style");
                 css.innerText = data;
@@ -196,7 +206,7 @@ window.slackPlugins = window.slackPlugins || (function(window) {
     };
 
     slackPluginsAPI.loadJSFile = function(filepart) {
-        fs.readFile(homedir + "/" + ".slack" + "/" + filepart, {encoding: "utf-8"}, function(err, data) {
+        fs.readFile(homedir + fileSeparator + ".slack" + fileSeparator + filepart, {encoding: "utf-8"}, function(err, data) {
             if (!err) {
                 data += "\n\n//# sourceURL=/slack-customizations/" + filepart;
                 eval(data);
