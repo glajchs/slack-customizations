@@ -38,13 +38,14 @@ $PatchFiles = [pscustomobject]@{
 #----------------------------------------------------------------------------#
 
 $PluginDirectory = (New-Item -Path (Join-Path $env:UserProfile '.slack') -ItemType Directory -Force).FullName
-$SymLinkLocation = (    New-Item -Path $SymLinkLocation -ItemType SymbolicLink -Value $PluginDirectory -Force).FullName
+New-Item -Path (Join-Path $env:LocalAppData '.slack') -ItemType SymbolicLink -Value $PluginDirectory -Force
 Start-Process -FilePath 'CMD.EXE' -ArgumentList ('/C robocopy.exe "{0}" "{1} " /NFL /NC  /XD "*tests"' -f "$script:RepoDirectory\.slack ", $PluginDirectory) -NoNewWindow -PassThru | Wait-Process
 
 
 #----------------------------------------------------------------------------#
 #                                 Stop Slack                                 #
 #----------------------------------------------------------------------------#
+Write-PSFMessage -Level Important -Message "Stopping slack";
 Get-Process Slack -ErrorAction SilentlyContinue | Stop-Process
 
 
@@ -157,4 +158,5 @@ else
 {
     Write-PSFMessage -Level Important -Message "Mod Complete";
 }
+Write-PSFMessage -Level Important -Message "Starting $($Installations.FullName)";
 Start-Process $Installations.FullName -NoNewWindow
