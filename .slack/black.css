@@ -1886,6 +1886,10 @@ ts-thread .collapse_inline_thread_container:hover, ts-thread .view_all_replies_c
     color: #949494;
 }
 
+.c-pillow_file__swap .c-pillow_file__slide {
+    background: #222222;
+}
+
 .c-snippet__code .CodeMirror-code > div:before { background-color: #363636; border-right: 1px solid #363636; color: #949494; }
 
 .file_list_item.snippet .snippet_preview { background: #000; }
@@ -3179,6 +3183,27 @@ input.c-input_select__filter_input[type="text"] {
 .rxn .emoji_rxn_count { color: #e6e6e6; }
 
 .rxn.menu_rxn .ts_icon { color: rgba(230, 230, 230, 0.25); }
+
+.rxn_panel.feature_new_reactions .rxn.user_reacted {
+    background: inherit;
+}
+
+.rxn_panel.feature_new_reactions .rxn:hover {
+    background: inherit;
+    box-shadow: inset 0 0 0 1px #545454;
+}
+
+.rxn_panel.feature_new_reactions .rxn {
+    box-shadow: inset 0 0 0 1px #1d1c1d80;
+}
+
+.c-reaction--feature_new_reactions:hover {
+    background: inherit;
+}
+
+.c-icon--small-reaction:before {
+    color: #545454;
+}
 
 .modal { background-color: #222; border: 0; box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
 
