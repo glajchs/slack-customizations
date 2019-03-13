@@ -59,11 +59,11 @@ To disable all functionality, first you should go and disable all the plugins by
 
 Also the plugin files are all stored as a symlinked directory at "${HOME}/.slack" for Linux/Mac, or "%APPLOCALDATA%\.slack" for Windows.  If you delete the symlinked directory the plugins won't load.
 
-I don't have a "uninstallation" instructions to unpatch the ssb-interop.js and index.js files.
+To remove changes in patched files, simply run Update.exe in the appdata folder, typically contained in `%APPLOCALDATA%\slack\Update.exe` as this will reset the files. 
 
 Treat this as a last resort though, since plugins as a whole, or individual plugins, can be disabled in the Slack settings UI (Ctrl+,).
 
-Also The patched ssb-interop.js and index.js files only have a small number of lines appended to the end of them.  If you want you can manually edit these files to remove the ending sections.  Look for the `/** Start Slack Plugins Section **/` line.
+To manually remove the edits, review the patched ssb-interop.js and index.js. These files only have a small number of lines appended to the end of them.  If you want you can manually edit these files to remove the ending sections.  Look for the `/** Start Slack Plugins Section **/` line.
 
 
 ## How to run slack in devtools mode

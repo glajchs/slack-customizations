@@ -71,7 +71,9 @@ $installations = Get-ChildItem $slackBaseDir  -Filter *.exe -ea SilentlyContinue
 
     }
 } | Sort-Object -Property Version | Select-Object -Last 1
-$Version = $installations.Version # to ensure if windows 10 + app, etc installed, this is updating the most recent version installed
+[Version]$Version = $installations.Version
+
+# to ensure if windows 10 + app, etc installed, this is updating the most recent version installed
 Write-PSFMessage -Level Important -Message "Choosing highest present Slack version: $version";
 
 
@@ -80,7 +82,7 @@ Write-PSFMessage -Level Important -Message "Choosing highest present Slack versi
 #----------------------------------------------------------------------------#
 #                            PATCH index.js                                  #
 #----------------------------------------------------------------------------#
-$filename = (Get-ChildItem -Path $installations.Directory -Recurse | Where-Object FullName -match 'resources\\app.asar.unpacked\\src\\static\\index\.js').FullName
+$filename = (Get-ChildItem -Path $installations.Directory -Recurse | Where-Object {$_.FullName -match 'resources\\app.asar.unpacked\\src\\static\\index\.js' -and $_.FullName -match [string]$Version}).FullName
 $content = Get-Content $filename -Raw
 $modAdded = $false;
 $MatchPlugins = '(?ms)(\/\*\*\sStart\sSlack\sPlugins\sSection\s\*\*\/.*\/\*\*\sEnd\sSlack\sPlugins\sSection\s\*\*\/)'
@@ -89,7 +91,7 @@ $MatchPlugins = '(?ms)(\/\*\*\sStart\sSlack\sPlugins\sSection\s\*\*\/.*\/\*\*\sE
 #----------------------------------------------------------------------------#
 if ($content -match $MatchPlugins)
 {
-    Write-PSFMessage -Level Important -Message "Clearing the custom content"
+    Write-PSFMessage -Level Important -Message "Clearing the custom content in: $filename"
 
     # replace for each match identified. Simple loop to do this. Found inspiration on this from technet here -- http://bit.ly/2Uxspyk
     ([Regex]::Matches($content, $MatchPlugins)).Groups.Name | ForEach-Object {
@@ -103,13 +105,13 @@ if ($content -match $MatchPlugins)
 if ($content -notmatch '\/\/ CUSTOM START')
 {
     Add-Content -Path $filename -Value $PatchFiles.'index-snippet-append.js'
-    Write-PSFMessage -Level Important -Message "Mod Added To index.js";
+    Write-PSFMessage -Level Important -Message "Mod Added To index.js // $filename";
     $modAdded = $true;
 }
 else
 {
-    Write-PSFMessage -Level Important -Message "Mod Detected In index.js - Skipping";
-    Write-PSFMessage -Level Warning "To remove theme edit this file: $($version.FullName)\resources\app.asar.unpacked\src\static\index.js"
+    Write-PSFMessage -Level Important -Message "Mod Detected In index.js - Skipping $filename";
+    Write-PSFMessage -Level Warning "To remove theme edit this file: $filename"
 }
 
 
@@ -118,7 +120,7 @@ else
 #----------------------------------------------------------------------------#
 #                               PATCH ssb-interop.js                         #
 #----------------------------------------------------------------------------#
-$filename = (Get-ChildItem -Path $installations.Directory -Recurse | Where-Object FullName -match "resources\\app.asar.unpacked\\src\\static\\ssb\-interop\.js").FullName
+$filename = (Get-ChildItem -Path $installations.Directory -Recurse | Where-Object {$_.FullName -match "resources\\app.asar.unpacked\\src\\static\\ssb\-interop\.js" -and $_.FullName -match [string]$Version}).FullName
 $content = Get-Content $filename -Raw
 
 #----------------------------------------------------------------------------#
@@ -126,7 +128,7 @@ $content = Get-Content $filename -Raw
 #----------------------------------------------------------------------------#
 if ($content -match $MatchPlugins)
 {
-    Write-PSFMessage -Level Important -Message "Clearing the custom content"
+    Write-PSFMessage -Level Important -Message "Clearing the custom content in: $filename"
     # replace for each match identified. Simple loop to do this. Found inspiration on this from technet here -- http://bit.ly/2Uxspyk
     ([Regex]::Matches($content, $MatchPlugins)).Groups.Name | ForEach-Object {
         $content = $content -replace $MatchPlugins, ''
@@ -140,13 +142,13 @@ if ($content -match $MatchPlugins)
 if ($content -notmatch $MatchPlugins)
 {
     Add-Content -Path $filename -Value $PatchFiles.'ssb-interop-snippet-append.js'
-    Write-PSFMessage -Level Important -Message "Mod Added To ssb-interop.js";
+    Write-PSFMessage -Level Important -Message "Mod Added To ssb-interop.js // $filename";
     $modAdded = $true;
 }
 else
 {
-    Write-PSFMessage -Level Important -Message "Mod Detected In ssb-interop.js - Skipping";
-    Write-PSFMessage -Level Warning "To remove theme edit this file: $($version.FullName)\resources\app.asar.unpacked\src\static\ssb-interop.js"
+    Write-PSFMessage -Level Important -Message "Mod Detected In ssb-interop.js - Skipping $filename";
+    Write-PSFMessage -Level Warning "To remove theme edit this file: $filename"
 }
 
 if (@(Get-Process "slack" -ErrorAction SilentlyContinue).Count -gt 0)
