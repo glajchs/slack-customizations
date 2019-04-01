@@ -1840,8 +1840,8 @@ label.p-search_filter__option.p-search_filter__option--suggestion:hover {
     color: inherit;
 }
 
-.c-message_group .c-message_group__header:focus .c-channel_name, .c-message_group .c-message_group__header:focus .c-channel_name__team_name, .c-message_group .c-message_group__header:focus .c-message_group__header_date, .c-message_group:hover .c-message_group__header .c-channel_name, .c-message_group:hover .c-message_group__header .c-channel_name__team_name, .c-message_group:hover .c-message_group__header .c-message_group__header_date {
-    color: inherit;
+.c-message_group .c-message_group__header:focus .c-channel_name, .c-message_group .c-message_group__header:focus .c-channel_name__team_name, .c-message_group .c-message_group__header:focus .c-message_group__header_date, .c-message_group:hover .c-message_group__header .c-channel_name, .c-message_group:hover .c-message_group__header .c-channel_name__team_name, .c-message_group:hover .c-message_group__header .c-message_group__header_date, .p-threads_view_header__permalink, .p-threads_view_header__permalink:active, .p-threads_view_header__permalink:focus, .p-threads_view_header__permalink:hover {
+    color: inherit !important;
 }
 
 .c-button-unstyled:active, .c-button-unstyled:focus, .c-button-unstyled:hover {
@@ -2083,6 +2083,46 @@ body > pre { background: #828282; }
 #threads_view_banner.messages_banner:hover .clear_unread_messages { background: #545454; }
 
 #threads_msgs.new_banner_is_showing::before { background: #222; }
+
+.p-threads_view__divider_label {
+    background: #363636;
+    color: #949494;
+}
+
+.p-threads_view__divider_line {
+    border-top: 1px solid #363636;
+}
+
+.p-threads_view__default_background {
+    background: #282828 !important;
+    color: #949494 !important;
+}
+
+.p-threads_view_root, .p-threads_view_reply, .p-threads_view__footer {
+    border-color: #545454;
+}
+
+.p_threads_view_load_newer_button, .p_threads_view_load_older_button {
+    border-color: #545454;
+    background: #363636 !important;
+}
+
+.c-link--button {
+    color: #c2c2c2;
+}
+
+.c-link--button:active, .c-link--button:hover {
+    color: white;
+}
+
+.unread_group_header .unread_group_mark {
+    background-color: #545454;
+    color: #c2c2c2 !important;
+}
+
+.btn_outline.hover, .btn_outline:focus, .btn_outline:hover {
+    background-color: #282828;
+}
 
 ts-thread { background: #222; }
 
@@ -3150,6 +3190,10 @@ input.c-input_select__filter_input[type="text"] {
 
 .c-reaction.menu_rxn .ts_icon { color: rgba(230, 230, 230, 0.25); }
 
+.c-reaction:hover {
+    background: #545454;
+}
+
 .c-react_search_input:hover .icon_search_wrapper *, .c-react_search_input:hover .search_input_wrapper * {
     color: #828282 !important;
 }
@@ -3202,7 +3246,11 @@ input.c-input_select__filter_input[type="text"] {
 }
 
 .c-icon--small-reaction:before {
-    color: #545454;
+    color: #949494;
+}
+
+.p-threads_view {
+    background: inherit;
 }
 
 .modal { background-color: #222; border: 0; box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
