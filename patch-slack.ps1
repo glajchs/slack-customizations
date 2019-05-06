@@ -53,8 +53,8 @@ Get-Process Slack -ErrorAction SilentlyContinue | Stop-Process
 #----------------------------------------------------------------------------#
 #                 Identify Paths Based on Install Locations                  #
 #----------------------------------------------------------------------------#
-$slackBaseDir = "$env:LocalAppData\Slack", "C:\Program Files (x86)\Slack"
-$installations = Get-ChildItem $slackBaseDir  -Filter *.exe -ea SilentlyContinue  | Where-Object { $_.Name.StartsWith("app-") -or $_.Name -match 'slack.exe'} | Select-PSFObject * -ScriptProperty @{
+[string[]]$slackBaseDir = "$env:LocalAppData\Slack", "C:\Program Files (x86)\Slack"
+$installations = Get-ChildItem -Path @($slackBaseDir) -Filter *.exe -ea SilentlyContinue -Recurse | Where-Object { $_.Name.StartsWith("app-") -or $_.Name -match 'slack.exe' } | Select-PSFObject * -ScriptProperty @{
     Version = {
         try
         {
@@ -82,7 +82,7 @@ Write-PSFMessage -Level Important -Message "Choosing highest present Slack versi
 #----------------------------------------------------------------------------#
 #                            PATCH index.js                                  #
 #----------------------------------------------------------------------------#
-$filename = (Get-ChildItem -Path $installations.Directory -Recurse | Where-Object {$_.FullName -match 'resources\\app.asar.unpacked\\src\\static\\index\.js' -and $_.FullName -match [string]$Version}).FullName
+$filename = (Get-ChildItem -Path $installations.Directory -Recurse | Where-Object { $_.FullName -match 'resources\\app.asar.unpacked\\src\\static\\index\.js' -and $_.FullName -match [string]$Version }).FullName
 $content = Get-Content $filename -Raw
 $modAdded = $false;
 $MatchPlugins = '(?ms)(\/\*\*\sStart\sSlack\sPlugins\sSection\s\*\*\/.*\/\*\*\sEnd\sSlack\sPlugins\sSection\s\*\*\/)'
@@ -120,7 +120,7 @@ else
 #----------------------------------------------------------------------------#
 #                               PATCH ssb-interop.js                         #
 #----------------------------------------------------------------------------#
-$filename = (Get-ChildItem -Path $installations.Directory -Recurse | Where-Object {$_.FullName -match "resources\\app.asar.unpacked\\src\\static\\ssb\-interop\.js" -and $_.FullName -match [string]$Version}).FullName
+$filename = (Get-ChildItem -Path $installations.Directory -Recurse | Where-Object { $_.FullName -match "resources\\app.asar.unpacked\\src\\static\\ssb\-interop\.js" -and $_.FullName -match [string]$Version }).FullName
 $content = Get-Content $filename -Raw
 
 #----------------------------------------------------------------------------#
