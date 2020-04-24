@@ -1,3 +1,6 @@
+# Retired
+Note: this repo is retired.  Ever since a major slack update in 2019, none of the variables required to do these (and any other) customizations are exposed anymore.  You can thank the awful black hole that is react and webpack for that.
+
 # slack-customizations
 Some customizations to slack, such as some keybindings, dark theme, etc
 
